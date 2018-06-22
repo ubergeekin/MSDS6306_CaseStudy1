@@ -1,0 +1,65 @@
+---
+title: "PMarquardt_CBallenger_BAKannan_CaseStudy1"
+author: "Paul Marquardt"
+date: "June 17, 2018"
+output: 
+  html_document:
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### MSDS 6306: Case Study 1 Introduction
+The following document represents a case study of craft breweries and the beers they produce across the United States. In this study we will make some general observations with the hope of providing information concerning details of the craft brewery market in the United States. This study does not represent an exhaustive list of craft breweries and their beers, but does contain general information about the overall craft beer market.Craft breweries are growing across the nation, as we can see in the following table.
+
+Table 1: Contains a total count of the number of breweries by their respective state
+```{r}
+# Question 1. How many breweries are present in each state?
+# Read the breweries.csv into a dataframe and assign the variable name brew
+brew <- read.csv(file = "breweries.csv", header = TRUE, sep = ",")
+# Load the plyr library
+library(plyr)
+# Assign the count function against the State column to the variable name st
+st <- count(brew, "State")
+# Display the st variable output
+st
+```
+
+There are numerous different types of beer styles. Each style of beer is created using differnt types of ingredients which include barley, malt, hops, and yeast. This also includes cider and lambic which is made from fruit juice. 
+
+Table 2: Lists several different styles of beer and corresponding data including hard cider
+```{r}
+# Question 2. Merge beer data with the breweries data. Print the first 6 observations and the last six observations to check the merged file. 
+# Read the beers.csv and assign it to the beer variable
+beer <- read.csv(file = "beers.csv", header = TRUE, sep = ",")
+# Merge the beers and brew data frames into the brewbeer variable
+brewbeer <- merge.data.frame(beer, brew, all = TRUE)
+# Display the first 6 lines of the merged dataset
+head(brewbeer)
+# Display the last 6 lines of the merged dataset
+tail(brewbeer)
+``` 
+### Question 3. Report the number of NA's in each column. 
+```{r}
+
+``` 
+### Question 4. Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare. 
+```{r}
+
+``` 
+### Question 5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer? 
+```{r}
+
+``` 
+### Quetion 6. Summary statistics for the ABV variable. 
+```{r}
+
+``` 
+### Question 7. Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot. 
+```{r}
+
+``` 
+You are welcome to use the ggplot2 library for graphs. Please ignore missing values in your analysis. Make your best judgment of a relationship and EXPLAIN your answer. 
+ 
