@@ -9,6 +9,9 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(plyr)
+library(ggplot2)
 ```
 
 ### MSDS 6306: Case Study 1 Introduction
@@ -50,15 +53,53 @@ sapply(brewbeer, function(y) sum( length( which( is.na( y ) ) ) ) )
 Analyzing the data, we have a large gap in IBU's of 1005 missing values out of 2410 rows.  There is also missing values in ABV, but small enough to continue with our analysis.
 
 ### Question 4. Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare. 
-Assigned to Chris
+Using the aggregate function, we are about to get the median value for ABV and IBU.  Due to the incomplete data for IBU and ABV, we are ignoring any NA values for the purpose of this study.
 ```{r}
-
+median_abv_ibu <- aggregate( brewbeer[ , 7:8 ], list( brewbeer$State ), median, na.rm=TRUE )
 ``` 
+
+Removing any possible NAs from the Median value of ABV.
+```{r fig.height=10}
+ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),], aes( Group.1, ABV ) ) +
+    geom_bar(stat="identity") +
+    coord_flip()
+```
+
+Removing any possible NAs from the Median value of IBU.
+```{r fig.height=10}
+ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),] , aes( Group.1, IBU ) ) +
+    geom_bar(stat="identity") +
+    coord_flip()
+```
+
 ### Question 5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer? 
-Assigned to Chris
+In order to identify which state's beer has the most alcohol we need to performt he following steps
+* Get the max ABV from each State and Merge it to the original data set
+* Perform a logical function to compare the beer list's ABV to the Max ABV
+* Sort by ABV to show the top ABV Beers.
 ```{r}
-
+max_abv_ibu <- aggregate( brewbeer[ , 7:8 ], list( brewbeer$State ), max, na.rm=TRUE )
+names( max_abv_ibu ) <- c( 'max_State', 'max_abv', 'max_ibu')
+# Merge Into Existing Data Set to do Logical Comparsons
+brewbeer <- merge( brewbeer, max_abv_ibu, by.x = "State", by.y = "max_State" )
+#Find the Beer that matches the max ABV by its State
+highest_abv_by_state <- brewbeer[brewbeer$ABV >= brewbeer$max_abv,c( 1, 3, 5, 7, 9)]
+#Filter our NAs
+highest_abv_by_state <- highest_abv_by_state[which(!is.na(highest_abv_by_state$State)), ]
+highest_abv_by_state[order(highest_abv_by_state$ABV, decreasing=TRUE),]
 ``` 
+
+Same process was done for IBU
+```{r}
+#Find the Beer that matches the max IBU by its State
+highest_ibu_by_state <- brewbeer[brewbeer$IBU >= brewbeer$max_ibu,c( 1, 3, 5, 8, 9)]
+#Filter our NAs
+highest_ibu_by_state <- highest_ibu_by_state[which(!is.na(highest_ibu_by_state$State)), ]
+highest_ibu_by_state[order(highest_ibu_by_state$IBU, decreasing=TRUE),]
+``` 
+
+Reviewing the data, we find that beers with the highest IBU is aligned with the same style accros all the states, IPA.  However, higher ABV beers have a wide variety of styles, but most being Imperial IPAs or Stours.
+
 ### Quetion 6. Summary statistics for the ABV variable. 
 ```{r}
 
