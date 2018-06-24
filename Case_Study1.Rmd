@@ -42,10 +42,12 @@ head(brewbeer)
 tail(brewbeer)
 ``` 
 ### Question 3. Report the number of NA's in each column. 
-Assigned to Chris
+In order to determine how many NAs are in each column, we will use the sapply() function.  The function will allow us to sum all true values or 1 that are NA's.  Any values that do not have NA's will be returned as False or 0, thus not being included in the sum.
 ```{r}
-
+sapply(brewbeer, function(y) sum( length( which( is.na( y ) ) ) ) )
 ``` 
+Analyzing the data, we have a large gap in IBU's of 1005 missing values out of 2410 rows.  There is also missing values in ABV, but small enough to continue with our analysis.
+
 ### Question 4. Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare. 
 Assigned to Chris
 ```{r}
