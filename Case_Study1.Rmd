@@ -35,7 +35,7 @@ Table 2: Lists several different styles of beer and corresponding data including
 # Read the beers.csv and assign it to the beer variable
 beer <- read.csv(file = "beers.csv", header = TRUE, sep = ",")
 # Merge the beers and brew data frames into the brewbeer variable
-brewbeer <- merge.data.frame(beer, brew, all = TRUE)
+brewbeer <- merge(brew, beer, by.x = "Brew_ID", by.y="Brewery_id")
 # Display the first 6 lines of the merged dataset
 head(brewbeer)
 # Display the last 6 lines of the merged dataset
