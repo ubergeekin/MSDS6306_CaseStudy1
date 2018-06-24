@@ -18,7 +18,7 @@ Table 1: Contains a total count of the number of breweries by their respective s
 ```{r}
 # Question 1. How many breweries are present in each state?
 # Read the breweries.csv into a dataframe and assign the variable name brew
-brew <- read.csv(file = "breweries.csv", header = TRUE, sep = ",")
+brew <- read.csv(file = "breweries.csv", header = TRUE, sep = ",", strip.white = TRUE)
 # Load the plyr library
 library(plyr)
 # Assign the count function against the State column to the variable name st
@@ -33,7 +33,7 @@ Table 2: Lists several different styles of beer and corresponding data including
 ```{r}
 # Question 2. Merge beer data with the breweries data. Print the first 6 observations and the last six observations to check the merged file. 
 # Read the beers.csv and assign it to the beer variable
-beer <- read.csv(file = "beers.csv", header = TRUE, sep = ",")
+beer <- read.csv(file = "beers.csv", header = TRUE, sep = ",", strip.white = TRUE)
 # Merge the beers and brew data frames into the brewbeer variable
 brewbeer <- merge(brew, beer, by.x = "Brew_ID", by.y="Brewery_id")
 # Display the first 6 lines of the merged dataset
@@ -41,6 +41,7 @@ head(brewbeer)
 # Display the last 6 lines of the merged dataset
 tail(brewbeer)
 ``` 
+
 ### Question 3. Report the number of NA's in each column. 
 In order to determine how many NAs are in each column, we will use the sapply() function.  The function will allow us to sum all true values or 1 that are NA's.  Any values that do not have NA's will be returned as False or 0, thus not being included in the sum.
 ```{r}
