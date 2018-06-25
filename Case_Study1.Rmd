@@ -102,11 +102,11 @@ Reviewing the data, we find that beers with the highest IBU is aligned with the 
 
 ### Quetion 6. Summary statistics for the ABV variable. 
 ```{r}
-
+summary(brewbeer$ABV)
 ``` 
 ### Question 7. Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot. 
 ```{r}
-
+plot(brewbeer$IBU, brewbeer$ABV, main="Scatterplot - Bitterness of the beer Vs Alcoholic content",xlab="International Bitterness Units (IBU)", ylab=" Alcohol By Volume (ABV)", pch=19)
 ``` 
 You are welcome to use the ggplot2 library for graphs. Please ignore missing values in your analysis. Make your best judgment of a relationship and EXPLAIN your answer. 
  
