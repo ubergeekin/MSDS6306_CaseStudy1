@@ -23,8 +23,6 @@ Table 1: Contains a total count of the number of breweries by their respective s
 # Question 1. How many breweries are present in each state?
 # Read the breweries.csv into a dataframe and assign the variable name brew
 brew <- read.csv(file = "breweries.csv", header = TRUE, sep = ",", strip.white = TRUE)
-# Load the plyr library
-library(plyr)
 # Assign the count function against the State column to the variable name st
 st <- count(brew, "State")
 # Display the st variable output
@@ -41,12 +39,13 @@ Table 2: Lists several different styles of beer and corresponding data including
 beer <- read.csv(file = "beers.csv", header = TRUE, sep = ",", strip.white = TRUE)
 # Merge the beers and brew data frames into the brewbeer variable
 brewbeer <- merge(brew, beer, by.x = "Brew_ID", by.y="Brewery_id")
+# Update Column Names
+names(brewbeer) <- c('Beer_ID','Brewery','City','State','Beer','Beer_ID','ABV','IBU','Style','Ounces')
 # Display the first 6 lines of the merged dataset
 kable( head(brewbeer) ) %>%
   kable_styling(bootstrap_options = c("striped", "condensed"))
 # Display the last 6 lines of the merged dataset
-dt <- tail(brewbeer[, -1])
-kable( dt ) %>%
+kable( tail(brewbeer) ) %>%
   kable_styling(bootstrap_options = c("striped", "condensed"))
 ``` 
 
@@ -55,69 +54,59 @@ Table 3: List of missing values in each column
 # Question 3. Report the number of NA's in each column.
 # Use sapply to count how many NAs are in each column
 dt <- sapply( brewbeer, function(y) sum( length( which( is.na( y ) ) ) ) )
-kable(dt)
+kable(dt) %>%
+  kable_styling(bootstrap_options = c("striped", "condensed"))
 ``` 
 Analyzing the data, we have a large gap in IBU's of 1005 missing values out of 2410 rows.  There is also missing values in ABV, but small enough to continue with our analysis.
 
-### Question 4. Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare. 
-Using the aggregate function, we are about to get the median value for ABV and IBU.  Due to the incomplete data for IBU and ABV, we are ignoring any NA values for the purpose of this study.
 ```{r}
+# Question 4. Compute the median alcohol content and international bitterness
+# aggregate function to get the median value for ABV and IBU
+# we are ignoring any NA values for the purpose of this study.
 median_abv_ibu <- aggregate( brewbeer[ , 7:8 ], list( brewbeer$State ), median, na.rm=TRUE )
+names(median_abv_ibu) <- c('State','ABV','IBU')
 ``` 
 
-Removing any possible NAs from the Median value of ABV.
+Table 4.1: Median ABV by State
 ```{r fig.height=10}
 # Add Labels
-ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),], aes( Group.1, ABV ) ) +
+ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),], aes( State, ABV ) ) +
     geom_bar(stat="identity") +
+    labs(title="Alcohol by Volume By State",x ="Alcohol by Volume", y = "State") +
     coord_flip()
 ```
-Indicate which state has max abv and min
-Explain what abv is
 
+The chart shows us that the District of Columbia had the highest median Alcohol by Volume (ABV) at 6.25% and Utah had the lowest at 4%.
 
-Removing any possible NAs from the Median value of IBU.
+Table 4.2: Median IBU by State
 ```{r fig.height=10}
 # Add Labels
-ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),] , aes( Group.1, IBU ) ) +
+ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),] , aes( State, IBU ) ) +
     geom_bar(stat="identity") +
+    labs(title="International Bittering Unit By State",x ="International Bittering Unit", y = "State") +
     coord_flip()
 ```
-Indicate which state has max ibu and min
-Explain what IBU is
 
+Maine has the highest median International Bittering Unit (IBU) of 61, while Hawaii has the lowest at 22.5 IBUs.
 
-### Question 5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer? 
-In order to identify which state's beer has the most alcohol we need to performt he following steps
-* Get the max ABV from each State and Merge it to the original data set
-* Perform a logical function to compare the beer list's ABV to the Max ABV
-* Sort by ABV to show the top ABV Beers.
+Table 5.1: Highest Rated Alcoholic Beer
 ```{r}
-max_abv_ibu <- aggregate( brewbeer[ , 7:8 ], list( brewbeer$State ), max, na.rm=TRUE )
-names( max_abv_ibu ) <- c( 'max_State', 'max_abv', 'max_ibu')
-# Merge Into Existing Data Set to do Logical Comparsons
-brewbeer <- merge( brewbeer, max_abv_ibu, by.x = "State", by.y = "max_State" )
-#Find the Beer that matches the max ABV by its State
-highest_abv_by_state <- brewbeer[brewbeer$ABV >= brewbeer$max_abv,c( 1, 3, 5, 7, 9)]
-#Filter our NAs
-highest_abv_by_state <- highest_abv_by_state[which(!is.na(highest_abv_by_state$State)), ]
-head(highest_abv_by_state[order(highest_abv_by_state$ABV, decreasing=TRUE),], 1)
-``` 
-
-```{r}
-head( brewbeer[order(brewbeer$ABV, decreasing=TRUE),], 1)
+# Question 5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer? 
+# Order by ABV to get the top state
+kable( head( brewbeer[order(brewbeer$ABV, decreasing=TRUE),c(4,2,5,7,9) ], 1) ) %>%
+  kable_styling(bootstrap_options = c("striped", "condensed"))
 ```
 
-Same process was done for IBU
+We show that Colorodo brewing company, Upslope Brewing Company, has the highest alcoholic beer at 12.8%.
+
+Table 5.2: Highest Rated Bitterest Beer
 ```{r}
-#Find the Beer that matches the max IBU by its State
-highest_ibu_by_state <- brewbeer[brewbeer$IBU >= brewbeer$max_ibu,c( 1, 3, 5, 8, 9)]
-#Filter our NAs
-highest_ibu_by_state <- highest_ibu_by_state[which(!is.na(highest_ibu_by_state$State)), ]
-head( highest_ibu_by_state[order(highest_ibu_by_state$IBU, decreasing=TRUE),], 1)
+# Order by IBU to get the top state
+kable( head( brewbeer[order(brewbeer$IBU, decreasing=TRUE),c(4,2,5,8,9) ], 1) ) %>%
+  kable_styling(bootstrap_options = c("striped", "condensed"))
 ``` 
 
-Reviewing the data, we find that beers with the highest IBU is aligned with the same style accros all the states, IPA.  However, higher ABV beers have a wide variety of styles, but most being Imperial IPAs or Stours.
+We show that Oregon has the highest IBU beer, which is an American Double / Imperial IPA.
 
 ### Quetion 6. Summary statistics for the ABV variable. 
 ```{r}

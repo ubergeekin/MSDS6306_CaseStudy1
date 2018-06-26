@@ -18,8 +18,6 @@ Table 1: Contains a total count of the number of breweries by their respective s
 # Question 1. How many breweries are present in each state?
 # Read the breweries.csv into a dataframe and assign the variable name brew
 brew <- read.csv(file = "breweries.csv", header = TRUE, sep = ",", strip.white = TRUE)
-# Load the plyr library
-library(plyr)
 # Assign the count function against the State column to the variable name st
 st <- count(brew, "State")
 # Display the st variable output
@@ -252,6 +250,8 @@ Table 2: Lists several different styles of beer and corresponding data including
 beer <- read.csv(file = "beers.csv", header = TRUE, sep = ",", strip.white = TRUE)
 # Merge the beers and brew data frames into the brewbeer variable
 brewbeer <- merge(brew, beer, by.x = "Brew_ID", by.y="Brewery_id")
+# Update Column Names
+names(brewbeer) <- c('Beer_ID','Brewery','City','State','Beer','Beer_ID','ABV','IBU','Style','Ounces')
 # Display the first 6 lines of the merged dataset
 kable( head(brewbeer) ) %>%
   kable_styling(bootstrap_options = c("striped", "condensed"))
@@ -260,11 +260,11 @@ kable( head(brewbeer) ) %>%
 <table class="table table-striped table-condensed" style="margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
-   <th style="text-align:right;"> Brew_ID </th>
-   <th style="text-align:left;"> Name.x </th>
+   <th style="text-align:right;"> Beer_ID </th>
+   <th style="text-align:left;"> Brewery </th>
    <th style="text-align:left;"> City </th>
    <th style="text-align:left;"> State </th>
-   <th style="text-align:left;"> Name.y </th>
+   <th style="text-align:left;"> Beer </th>
    <th style="text-align:right;"> Beer_ID </th>
    <th style="text-align:right;"> ABV </th>
    <th style="text-align:right;"> IBU </th>
@@ -350,19 +350,19 @@ kable( head(brewbeer) ) %>%
 
 ```r
 # Display the last 6 lines of the merged dataset
-dt <- tail(brewbeer[, -1])
-kable( dt ) %>%
-  kable_styling(bootstrap_options = c("striped", "condensed") )
+kable( tail(brewbeer) ) %>%
+  kable_styling(bootstrap_options = c("striped", "condensed"))
 ```
 
 <table class="table table-striped table-condensed" style="margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:left;">   </th>
-   <th style="text-align:left;"> Name.x </th>
+   <th style="text-align:right;"> Beer_ID </th>
+   <th style="text-align:left;"> Brewery </th>
    <th style="text-align:left;"> City </th>
    <th style="text-align:left;"> State </th>
-   <th style="text-align:left;"> Name.y </th>
+   <th style="text-align:left;"> Beer </th>
    <th style="text-align:right;"> Beer_ID </th>
    <th style="text-align:right;"> ABV </th>
    <th style="text-align:right;"> IBU </th>
@@ -373,6 +373,7 @@ kable( dt ) %>%
 <tbody>
   <tr>
    <td style="text-align:left;"> 2405 </td>
+   <td style="text-align:right;"> 556 </td>
    <td style="text-align:left;"> Ukiah Brewing Company </td>
    <td style="text-align:left;"> Ukiah </td>
    <td style="text-align:left;"> CA </td>
@@ -385,6 +386,7 @@ kable( dt ) %>%
   </tr>
   <tr>
    <td style="text-align:left;"> 2406 </td>
+   <td style="text-align:right;"> 557 </td>
    <td style="text-align:left;"> Butternuts Beer and Ale </td>
    <td style="text-align:left;"> Garrattsville </td>
    <td style="text-align:left;"> NY </td>
@@ -397,6 +399,7 @@ kable( dt ) %>%
   </tr>
   <tr>
    <td style="text-align:left;"> 2407 </td>
+   <td style="text-align:right;"> 557 </td>
    <td style="text-align:left;"> Butternuts Beer and Ale </td>
    <td style="text-align:left;"> Garrattsville </td>
    <td style="text-align:left;"> NY </td>
@@ -409,6 +412,7 @@ kable( dt ) %>%
   </tr>
   <tr>
    <td style="text-align:left;"> 2408 </td>
+   <td style="text-align:right;"> 557 </td>
    <td style="text-align:left;"> Butternuts Beer and Ale </td>
    <td style="text-align:left;"> Garrattsville </td>
    <td style="text-align:left;"> NY </td>
@@ -421,6 +425,7 @@ kable( dt ) %>%
   </tr>
   <tr>
    <td style="text-align:left;"> 2409 </td>
+   <td style="text-align:right;"> 557 </td>
    <td style="text-align:left;"> Butternuts Beer and Ale </td>
    <td style="text-align:left;"> Garrattsville </td>
    <td style="text-align:left;"> NY </td>
@@ -433,6 +438,7 @@ kable( dt ) %>%
   </tr>
   <tr>
    <td style="text-align:left;"> 2410 </td>
+   <td style="text-align:right;"> 558 </td>
    <td style="text-align:left;"> Sleeping Lady Brewing Company </td>
    <td style="text-align:left;"> Anchorage </td>
    <td style="text-align:left;"> AK </td>
@@ -452,163 +458,154 @@ Table 3: List of missing values in each column
 # Question 3. Report the number of NA's in each column.
 # Use sapply to count how many NAs are in each column
 dt <- sapply( brewbeer, function(y) sum( length( which( is.na( y ) ) ) ) )
-kable(dt)
+kable(dt) %>%
+  kable_styling(bootstrap_options = c("striped", "condensed"))
 ```
 
-<table>
+<table class="table table-striped table-condensed" style="margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
-   <th style="text-align:left;">   </th>
    <th style="text-align:right;"> x </th>
   </tr>
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> Brew_ID </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Name.x </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> City </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> State </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Name.y </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Beer_ID </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> ABV </td>
    <td style="text-align:right;"> 62 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> IBU </td>
    <td style="text-align:right;"> 1005 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Style </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Ounces </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
 </tbody>
 </table>
 Analyzing the data, we have a large gap in IBU's of 1005 missing values out of 2410 rows.  There is also missing values in ABV, but small enough to continue with our analysis.
 
-### Question 4. Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare. 
-Using the aggregate function, we are about to get the median value for ABV and IBU.  Due to the incomplete data for IBU and ABV, we are ignoring any NA values for the purpose of this study.
 
 ```r
+# Question 4. Compute the median alcohol content and international bitterness
+# aggregate function to get the median value for ABV and IBU
+# we are ignoring any NA values for the purpose of this study.
 median_abv_ibu <- aggregate( brewbeer[ , 7:8 ], list( brewbeer$State ), median, na.rm=TRUE )
+names(median_abv_ibu) <- c('State','ABV','IBU')
 ```
 
-Removing any possible NAs from the Median value of ABV.
+Table 4.1: Median ABV by State
 
 ```r
 # Add Labels
-ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),], aes( Group.1, ABV ) ) +
+ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),], aes( State, ABV ) ) +
     geom_bar(stat="identity") +
+    labs(title="Alcohol by Volume By State",x ="Alcohol by Volume", y = "State") +
     coord_flip()
 ```
 
 ![](Case_Study1_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
-Indicate which state has max abv and min
-Explain what abv is
 
+The chart shows us that the District of Columbia had the highest median Alcohol by Volume (ABV) at 6.25% and Utah had the lowest at 4%.
 
-Removing any possible NAs from the Median value of IBU.
+Table 4.2: Median IBU by State
 
 ```r
 # Add Labels
-ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),] , aes( Group.1, IBU ) ) +
+ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),] , aes( State, IBU ) ) +
     geom_bar(stat="identity") +
+    labs(title="International Bittering Unit By State",x ="International Bittering Unit", y = "State") +
     coord_flip()
 ```
 
 ![](Case_Study1_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
-Indicate which state has max ibu and min
-Explain what IBU is
 
+Maine has the highest median International Bittering Unit (IBU) of 61, while Hawaii has the lowest at 22.5 IBUs.
 
-### Question 5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer? 
-In order to identify which state's beer has the most alcohol we need to performt he following steps
-* Get the max ABV from each State and Merge it to the original data set
-* Perform a logical function to compare the beer list's ABV to the Max ABV
-* Sort by ABV to show the top ABV Beers.
+Table 5.1: Highest Rated Alcoholic Beer
 
 ```r
-max_abv_ibu <- aggregate( brewbeer[ , 7:8 ], list( brewbeer$State ), max, na.rm=TRUE )
+# Question 5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer? 
+# Order by ABV to get the top state
+kable( head( brewbeer[order(brewbeer$ABV, decreasing=TRUE),c(4,2,5,7,9) ], 1) ) %>%
+  kable_styling(bootstrap_options = c("striped", "condensed"))
 ```
 
-```
-## Warning in FUN(X[[i]], ...): no non-missing arguments to max; returning -
-## Inf
-```
+<table class="table table-striped table-condensed" style="margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:left;"> State </th>
+   <th style="text-align:left;"> Brewery </th>
+   <th style="text-align:left;"> Beer </th>
+   <th style="text-align:right;"> ABV </th>
+   <th style="text-align:left;"> Style </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 384 </td>
+   <td style="text-align:left;"> CO </td>
+   <td style="text-align:left;"> Upslope Brewing Company </td>
+   <td style="text-align:left;"> Lee Hill Series Vol. 5 - Belgian Style Quadrupel Ale </td>
+   <td style="text-align:right;"> 0.128 </td>
+   <td style="text-align:left;"> Quadrupel (Quad) </td>
+  </tr>
+</tbody>
+</table>
 
-```r
-names( max_abv_ibu ) <- c( 'max_State', 'max_abv', 'max_ibu')
-# Merge Into Existing Data Set to do Logical Comparsons
-brewbeer <- merge( brewbeer, max_abv_ibu, by.x = "State", by.y = "max_State" )
-#Find the Beer that matches the max ABV by its State
-highest_abv_by_state <- brewbeer[brewbeer$ABV >= brewbeer$max_abv,c( 1, 3, 5, 7, 9)]
-#Filter our NAs
-highest_abv_by_state <- highest_abv_by_state[which(!is.na(highest_abv_by_state$State)), ]
-head(highest_abv_by_state[order(highest_abv_by_state$ABV, decreasing=TRUE),], 1)
-```
+We show that Colorodo brewing company, Upslope Brewing Company, has the highest alcoholic beer at 12.8%.
 
-```
-##     State                  Name.x
-## 518    CO Upslope Brewing Company
-##                                                   Name.y   ABV
-## 518 Lee Hill Series Vol. 5 - Belgian Style Quadrupel Ale 0.128
-##                Style
-## 518 Quadrupel (Quad)
-```
-
-
-```r
-head( brewbeer[order(brewbeer$ABV, decreasing=TRUE),], 1)
-```
-
-```
-##     State Brew_ID                  Name.x    City
-## 518    CO      52 Upslope Brewing Company Boulder
-##                                                   Name.y Beer_ID   ABV IBU
-## 518 Lee Hill Series Vol. 5 - Belgian Style Quadrupel Ale    2565 0.128  NA
-##                Style Ounces max_abv max_ibu
-## 518 Quadrupel (Quad)   19.2   0.128     104
-```
-
-Same process was done for IBU
+Table 5.2: Highest Rated Bitterest Beer
 
 ```r
-#Find the Beer that matches the max IBU by its State
-highest_ibu_by_state <- brewbeer[brewbeer$IBU >= brewbeer$max_ibu,c( 1, 3, 5, 8, 9)]
-#Filter our NAs
-highest_ibu_by_state <- highest_ibu_by_state[which(!is.na(highest_ibu_by_state$State)), ]
-head( highest_ibu_by_state[order(highest_ibu_by_state$IBU, decreasing=TRUE),], 1)
+# Order by IBU to get the top state
+kable( head( brewbeer[order(brewbeer$IBU, decreasing=TRUE),c(4,2,5,8,9) ], 1) ) %>%
+  kable_styling(bootstrap_options = c("striped", "condensed"))
 ```
 
-```
-##      State                  Name.x                    Name.y IBU
-## 1824    OR Astoria Brewing Company Bitter Bitch Imperial IPA 138
-##                               Style
-## 1824 American Double / Imperial IPA
-```
+<table class="table table-striped table-condensed" style="margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:left;"> State </th>
+   <th style="text-align:left;"> Brewery </th>
+   <th style="text-align:left;"> Beer </th>
+   <th style="text-align:right;"> IBU </th>
+   <th style="text-align:left;"> Style </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 1857 </td>
+   <td style="text-align:left;"> OR </td>
+   <td style="text-align:left;"> Astoria Brewing Company </td>
+   <td style="text-align:left;"> Bitter Bitch Imperial IPA </td>
+   <td style="text-align:right;"> 138 </td>
+   <td style="text-align:left;"> American Double / Imperial IPA </td>
+  </tr>
+</tbody>
+</table>
 
-Reviewing the data, we find that beers with the highest IBU is aligned with the same style accros all the states, IPA.  However, higher ABV beers have a wide variety of styles, but most being Imperial IPAs or Stours.
+We show that Oregon has the highest IBU beer, which is an American Double / Imperial IPA.
 
 ### Quetion 6. Summary statistics for the ABV variable. 
 
@@ -626,6 +623,6 @@ summary(brewbeer$ABV)
 plot(brewbeer$IBU, brewbeer$ABV, main="Scatterplot - Bitterness of the beer Vs Alcoholic content",xlab="International Bitterness Units (IBU)", ylab=" Alcohol By Volume (ABV)", pch=19)
 ```
 
-![](Case_Study1_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+![](Case_Study1_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 You are welcome to use the ggplot2 library for graphs. Please ignore missing values in your analysis. Make your best judgment of a relationship and EXPLAIN your answer. 
  
