@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(plyr)
 library(ggplot2)
+library(kableExtra)
 ```
 
 ### MSDS 6306: Case Study 1 Introduction
@@ -27,7 +28,8 @@ library(plyr)
 # Assign the count function against the State column to the variable name st
 st <- count(brew, "State")
 # Display the st variable output
-st
+kable( st )  %>%
+  kable_styling(bootstrap_options = c("striped", "condensed"), full_width = F)
 ```
 
 There are numerous different types of beer styles. Each style of beer is created using differnt types of ingredients which include barley, malt, hops, and yeast. This also includes cider and lambic which is made from fruit juice. 
@@ -40,15 +42,20 @@ beer <- read.csv(file = "beers.csv", header = TRUE, sep = ",", strip.white = TRU
 # Merge the beers and brew data frames into the brewbeer variable
 brewbeer <- merge(brew, beer, by.x = "Brew_ID", by.y="Brewery_id")
 # Display the first 6 lines of the merged dataset
-head(brewbeer)
+kable( head(brewbeer) ) %>%
+  kable_styling(bootstrap_options = c("striped", "condensed"))
 # Display the last 6 lines of the merged dataset
-tail(brewbeer)
+dt <- tail(brewbeer[, -1])
+kable( dt ) %>%
+  kable_styling(bootstrap_options = c("striped", "condensed"))
 ``` 
 
-### Question 3. Report the number of NA's in each column. 
-In order to determine how many NAs are in each column, we will use the sapply() function.  The function will allow us to sum all true values or 1 that are NA's.  Any values that do not have NA's will be returned as False or 0, thus not being included in the sum.
+Table 3: List of missing values in each column
 ```{r}
-sapply(brewbeer, function(y) sum( length( which( is.na( y ) ) ) ) )
+# Question 3. Report the number of NA's in each column.
+# Use sapply to count how many NAs are in each column
+dt <- sapply( brewbeer, function(y) sum( length( which( is.na( y ) ) ) ) )
+kable(dt)
 ``` 
 Analyzing the data, we have a large gap in IBU's of 1005 missing values out of 2410 rows.  There is also missing values in ABV, but small enough to continue with our analysis.
 
@@ -60,17 +67,25 @@ median_abv_ibu <- aggregate( brewbeer[ , 7:8 ], list( brewbeer$State ), median, 
 
 Removing any possible NAs from the Median value of ABV.
 ```{r fig.height=10}
+# Add Labels
 ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),], aes( Group.1, ABV ) ) +
     geom_bar(stat="identity") +
     coord_flip()
 ```
+Indicate which state has max abv and min
+Explain what abv is
+
 
 Removing any possible NAs from the Median value of IBU.
 ```{r fig.height=10}
+# Add Labels
 ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),] , aes( Group.1, IBU ) ) +
     geom_bar(stat="identity") +
     coord_flip()
 ```
+Indicate which state has max ibu and min
+Explain what IBU is
+
 
 ### Question 5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer? 
 In order to identify which state's beer has the most alcohol we need to performt he following steps
@@ -86,8 +101,12 @@ brewbeer <- merge( brewbeer, max_abv_ibu, by.x = "State", by.y = "max_State" )
 highest_abv_by_state <- brewbeer[brewbeer$ABV >= brewbeer$max_abv,c( 1, 3, 5, 7, 9)]
 #Filter our NAs
 highest_abv_by_state <- highest_abv_by_state[which(!is.na(highest_abv_by_state$State)), ]
-highest_abv_by_state[order(highest_abv_by_state$ABV, decreasing=TRUE),]
+head(highest_abv_by_state[order(highest_abv_by_state$ABV, decreasing=TRUE),], 1)
 ``` 
+
+```{r}
+head( brewbeer[order(brewbeer$ABV, decreasing=TRUE),], 1)
+```
 
 Same process was done for IBU
 ```{r}
@@ -95,7 +114,7 @@ Same process was done for IBU
 highest_ibu_by_state <- brewbeer[brewbeer$IBU >= brewbeer$max_ibu,c( 1, 3, 5, 8, 9)]
 #Filter our NAs
 highest_ibu_by_state <- highest_ibu_by_state[which(!is.na(highest_ibu_by_state$State)), ]
-highest_ibu_by_state[order(highest_ibu_by_state$IBU, decreasing=TRUE),]
+head( highest_ibu_by_state[order(highest_ibu_by_state$IBU, decreasing=TRUE),], 1)
 ``` 
 
 Reviewing the data, we find that beers with the highest IBU is aligned with the same style accros all the states, IPA.  However, higher ABV beers have a wide variety of styles, but most being Imperial IPAs or Stours.
