@@ -1,6 +1,6 @@
 ---
-title: "PMarquardt_CBallenger_BAKannan_CaseStudy1"
-author: "Paul Marquardt"
+title: "A study of top beers in America"
+author: "Paul Marquardt, Chris Ballenger, and Bhuvana Adur Kannan"
 date: "June 17, 2018"
 output: 
   html_document:
