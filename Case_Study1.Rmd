@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(plyr)
 library(ggplot2)
 library(kableExtra)
+library(dataMaid)
 ```
 
 ### MSDS 6306: Case Study 1 Introduction
@@ -108,13 +109,21 @@ kable( head( brewbeer[order(brewbeer$IBU, decreasing=TRUE),c(4,2,5,8,9) ], 1) ) 
 
 We show that Oregon has the highest IBU beer, which is an American Double / Imperial IPA.
 
-### Quetion 6. Summary statistics for the ABV variable. 
+Table 6.1: Summary statistics for the ABV variable. 
 ```{r}
-summary(brewbeer$ABV)
+kable(data.frame(Summary_Statistics_Value = unclass(summary(brewbeer$ABV))))%>%
+  kable_styling(bootstrap_options = c("striped", "condensed"), full_width = F)
 ``` 
-### Question 7. Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot. 
+The summary shows that the mean is slightly higher than the median, which means that the distribution of the ABV variable will be right skewed.
+
+Table 7.1 : Scatter plot to show the relationship between the bitterness of the beer and its alcoholic content.
 ```{r}
 plot(brewbeer$IBU, brewbeer$ABV, main="Scatterplot - Bitterness of the beer Vs Alcoholic content",xlab="International Bitterness Units (IBU)", ylab=" Alcohol By Volume (ABV)", pch=19)
 ``` 
-You are welcome to use the ggplot2 library for graphs. Please ignore missing values in your analysis. Make your best judgment of a relationship and EXPLAIN your answer. 
- 
+
+The scatter plot shows a positive relationship between IBU & ABV values.
+There is a positive correlation between IBU & ABV values.
+
+```{r}
+#makeCodebook(brewbeer)
+```

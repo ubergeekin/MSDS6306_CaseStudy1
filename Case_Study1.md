@@ -1,6 +1,6 @@
 ---
-title: "PMarquardt_CBallenger_BAKannan_CaseStudy1"
-author: "Paul Marquardt"
+title: "A study of top beers in America"
+author: "Paul Marquardt, Chris Ballenger, and Bhuvana Adur Kannan"
 date: "June 17, 2018"
 output: 
   html_document:
@@ -607,22 +607,65 @@ kable( head( brewbeer[order(brewbeer$IBU, decreasing=TRUE),c(4,2,5,8,9) ], 1) ) 
 
 We show that Oregon has the highest IBU beer, which is an American Double / Imperial IPA.
 
-### Quetion 6. Summary statistics for the ABV variable. 
+Table 6.1: Summary statistics for the ABV variable. 
 
 ```r
-summary(brewbeer$ABV)
+kable(data.frame(Summary_Statistics_Value = unclass(summary(brewbeer$ABV))))%>%
+  kable_styling(bootstrap_options = c("striped", "condensed"), full_width = F)
 ```
 
-```
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
-## 0.00100 0.05000 0.05600 0.05977 0.06700 0.12800      62
-```
-### Question 7. Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot. 
+<table class="table table-striped table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:right;"> Summary_Statistics_Value </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Min. </td>
+   <td style="text-align:right;"> 0.0010000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1st Qu. </td>
+   <td style="text-align:right;"> 0.0500000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Median </td>
+   <td style="text-align:right;"> 0.0560000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Mean </td>
+   <td style="text-align:right;"> 0.0597734 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3rd Qu. </td>
+   <td style="text-align:right;"> 0.0670000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Max. </td>
+   <td style="text-align:right;"> 0.1280000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NA's </td>
+   <td style="text-align:right;"> 62.0000000 </td>
+  </tr>
+</tbody>
+</table>
+The summary shows that the mean is slightly higher than the median, which means that the distribution of the ABV variable will be right skewed.
+
+Table 7.1 : Scatter plot to show the relationship between the bitterness of the beer and its alcoholic content.
 
 ```r
 plot(brewbeer$IBU, brewbeer$ABV, main="Scatterplot - Bitterness of the beer Vs Alcoholic content",xlab="International Bitterness Units (IBU)", ylab=" Alcohol By Volume (ABV)", pch=19)
 ```
 
 ![](Case_Study1_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
-You are welcome to use the ggplot2 library for graphs. Please ignore missing values in your analysis. Make your best judgment of a relationship and EXPLAIN your answer. 
- 
+
+The scatter plot shows a positive relationship between IBU & ABV values.
+There is a positive correlation between IBU & ABV values.
+
+
+```r
+#makeCodebook(brewbeer)
+```
