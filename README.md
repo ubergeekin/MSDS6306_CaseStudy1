@@ -9,3 +9,4 @@ Required libraries
 * plyr
 * ggplot2
 * kableExtra
+* dataMaid
