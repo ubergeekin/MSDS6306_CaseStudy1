@@ -3,7 +3,7 @@ setwd("/Users/christopherballenger/Documents/Data Science/MSDS 6306/Projects/Cas
 brew <- read.csv(file = "breweries.csv", header = TRUE, sep = ",", strip.white = TRUE)
 beer <- read.csv(file = "beers.csv", header = TRUE, sep = ",", strip.white = TRUE)
 brewbeer <- merge(brew, beer, by.x = "Brew_ID", by.y="Brewery_id")
-names(brewbeer) <- c('Beer_ID','Brewery','City','State','Beer','Beer_ID','ABV','IBU','Style','Ounces')
+names(brewbeer) <- c('Brewery_id','Brewery','City','State','Beer','Beer_ID','ABV','IBU','Style','Ounces')
 
 # Provide descriptions of each variable
 attr(brewbeer$ABV, "shortDescription") <-
