@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(plyr)
 library(ggplot2)
 library(kableExtra)
+library(mapproj)
 library(dataMaid)
 ```
 
@@ -26,6 +27,20 @@ Table 1: Contains a total count of the number of breweries by their respective s
 brew <- read.csv(file = "breweries.csv", header = TRUE, sep = ",", strip.white = TRUE)
 # Assign the count function against the State column to the variable name st
 st <- count(brew, "State")
+states <- map_data("state")
+state_names <- data.frame( region = tolower(state.name), state.abb = state.abb)
+st <- merge( st, state_names, by.x = "State", by.y = "state.abb" )
+choro <- merge(states, st, sort = FALSE, by = "region")
+choro <- choro[order(choro$order), ]
+ggplot(choro, aes(long, lat)) +
+    geom_polygon(aes(group = group, fill = freq)) +
+    coord_map("albers",  at0 = 45.5, lat1 = 29.5) +
+    labs(title="Number of Breweries by State", x = "", y = "") +
+    theme(axis.text.x = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks = element_blank(),
+          rect = element_blank(),
+          plot.title = element_text(hjust = 0.5))
 # Display the st variable output
 kable( st,row.names=FALSE )  %>%
   kable_styling(bootstrap_options = c("striped", "condensed"), full_width = F)
@@ -75,7 +90,8 @@ Table 4.1: Median ABV by State
 ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),], aes( State, ABV ) ) +
     geom_bar(stat="identity") +
     labs(title="Alcohol by Volume By State",x ="Alcohol by Volume", y = "State") +
-    coord_flip()
+    coord_flip() +
+    theme(plot.title = element_text(hjust = 0.5))
 ```
 
 The chart shows us that the District of Columbia had the highest median Alcohol by Volume (ABV) at 6.25% and Utah had the lowest at 4%.
@@ -86,7 +102,8 @@ Table 4.2: Median IBU by State
 ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),] , aes( State, IBU ) ) +
     geom_bar(stat="identity") +
     labs(title="International Bittering Unit By State",x ="International Bittering Unit", y = "State") +
-    coord_flip()
+    coord_flip() +
+    theme(plot.title = element_text(hjust = 0.5))
 ```
 
 Maine has the highest median International Bittering Unit (IBU) of 61, while Hawaii has the lowest at 22.5 IBUs.
