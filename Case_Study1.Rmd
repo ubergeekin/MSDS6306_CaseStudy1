@@ -27,7 +27,7 @@ brew <- read.csv(file = "breweries.csv", header = TRUE, sep = ",", strip.white =
 # Assign the count function against the State column to the variable name st
 st <- count(brew, "State")
 # Display the st variable output
-kable( st )  %>%
+kable( st,row.names=FALSE )  %>%
   kable_styling(bootstrap_options = c("striped", "condensed"), full_width = F)
 ```
 
@@ -41,12 +41,12 @@ beer <- read.csv(file = "beers.csv", header = TRUE, sep = ",", strip.white = TRU
 # Merge the beers and brew data frames into the brewbeer variable
 brewbeer <- merge(brew, beer, by.x = "Brew_ID", by.y="Brewery_id")
 # Update Column Names
-names(brewbeer) <- c('Beer_ID','Brewery','City','State','Beer','Beer_ID','ABV','IBU','Style','Ounces')
+names(brewbeer) <- c('Brew_ID','Brewery','City','State','Beer','Beer_ID','ABV','IBU','Style','Ounces')
 # Display the first 6 lines of the merged dataset
-kable( head(brewbeer) ) %>%
+kable( head(brewbeer),row.names=FALSE ) %>%
   kable_styling(bootstrap_options = c("striped", "condensed"))
 # Display the last 6 lines of the merged dataset
-kable( tail(brewbeer) ) %>%
+kable( tail(brewbeer),row.names=FALSE ) %>%
   kable_styling(bootstrap_options = c("striped", "condensed"))
 ``` 
 
@@ -55,7 +55,8 @@ Table 3: List of missing values in each column
 # Question 3. Report the number of NA's in each column.
 # Use sapply to count how many NAs are in each column
 dt <- sapply( brewbeer, function(y) sum( length( which( is.na( y ) ) ) ) )
-kable(dt) %>%
+dt <- data.frame( FieldNames = names(brewbeer), Missing_NAs = dt)
+kable( dt, row.names=FALSE ) %>%
   kable_styling(bootstrap_options = c("striped", "condensed"))
 ``` 
 Analyzing the data, we have a large gap in IBU's of 1005 missing values out of 2410 rows.  There is also missing values in ABV, but small enough to continue with our analysis.

@@ -21,7 +21,7 @@ brew <- read.csv(file = "breweries.csv", header = TRUE, sep = ",", strip.white =
 # Assign the count function against the State column to the variable name st
 st <- count(brew, "State")
 # Display the st variable output
-kable( st )  %>%
+kable( st,row.names=FALSE )  %>%
   kable_styling(bootstrap_options = c("striped", "condensed"), full_width = F)
 ```
 
@@ -251,16 +251,16 @@ beer <- read.csv(file = "beers.csv", header = TRUE, sep = ",", strip.white = TRU
 # Merge the beers and brew data frames into the brewbeer variable
 brewbeer <- merge(brew, beer, by.x = "Brew_ID", by.y="Brewery_id")
 # Update Column Names
-names(brewbeer) <- c('Beer_ID','Brewery','City','State','Beer','Beer_ID','ABV','IBU','Style','Ounces')
+names(brewbeer) <- c('Brew_ID','Brewery','City','State','Beer','Beer_ID','ABV','IBU','Style','Ounces')
 # Display the first 6 lines of the merged dataset
-kable( head(brewbeer) ) %>%
+kable( head(brewbeer),row.names=FALSE ) %>%
   kable_styling(bootstrap_options = c("striped", "condensed"))
 ```
 
 <table class="table table-striped table-condensed" style="margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
-   <th style="text-align:right;"> Beer_ID </th>
+   <th style="text-align:right;"> Brew_ID </th>
    <th style="text-align:left;"> Brewery </th>
    <th style="text-align:left;"> City </th>
    <th style="text-align:left;"> State </th>
@@ -350,15 +350,14 @@ kable( head(brewbeer) ) %>%
 
 ```r
 # Display the last 6 lines of the merged dataset
-kable( tail(brewbeer) ) %>%
+kable( tail(brewbeer),row.names=FALSE ) %>%
   kable_styling(bootstrap_options = c("striped", "condensed"))
 ```
 
 <table class="table table-striped table-condensed" style="margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
-   <th style="text-align:left;">   </th>
-   <th style="text-align:right;"> Beer_ID </th>
+   <th style="text-align:right;"> Brew_ID </th>
    <th style="text-align:left;"> Brewery </th>
    <th style="text-align:left;"> City </th>
    <th style="text-align:left;"> State </th>
@@ -372,7 +371,6 @@ kable( tail(brewbeer) ) %>%
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> 2405 </td>
    <td style="text-align:right;"> 556 </td>
    <td style="text-align:left;"> Ukiah Brewing Company </td>
    <td style="text-align:left;"> Ukiah </td>
@@ -385,7 +383,6 @@ kable( tail(brewbeer) ) %>%
    <td style="text-align:right;"> 12 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2406 </td>
    <td style="text-align:right;"> 557 </td>
    <td style="text-align:left;"> Butternuts Beer and Ale </td>
    <td style="text-align:left;"> Garrattsville </td>
@@ -398,7 +395,6 @@ kable( tail(brewbeer) ) %>%
    <td style="text-align:right;"> 12 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2407 </td>
    <td style="text-align:right;"> 557 </td>
    <td style="text-align:left;"> Butternuts Beer and Ale </td>
    <td style="text-align:left;"> Garrattsville </td>
@@ -411,7 +407,6 @@ kable( tail(brewbeer) ) %>%
    <td style="text-align:right;"> 12 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2408 </td>
    <td style="text-align:right;"> 557 </td>
    <td style="text-align:left;"> Butternuts Beer and Ale </td>
    <td style="text-align:left;"> Garrattsville </td>
@@ -424,7 +419,6 @@ kable( tail(brewbeer) ) %>%
    <td style="text-align:right;"> 12 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2409 </td>
    <td style="text-align:right;"> 557 </td>
    <td style="text-align:left;"> Butternuts Beer and Ale </td>
    <td style="text-align:left;"> Garrattsville </td>
@@ -437,7 +431,6 @@ kable( tail(brewbeer) ) %>%
    <td style="text-align:right;"> 12 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 2410 </td>
    <td style="text-align:right;"> 558 </td>
    <td style="text-align:left;"> Sleeping Lady Brewing Company </td>
    <td style="text-align:left;"> Anchorage </td>
@@ -458,45 +451,57 @@ Table 3: List of missing values in each column
 # Question 3. Report the number of NA's in each column.
 # Use sapply to count how many NAs are in each column
 dt <- sapply( brewbeer, function(y) sum( length( which( is.na( y ) ) ) ) )
-kable(dt) %>%
+dt <- data.frame( FieldNames = names(brewbeer), Missing_NAs = dt)
+kable( dt, row.names=FALSE ) %>%
   kable_styling(bootstrap_options = c("striped", "condensed"))
 ```
 
 <table class="table table-striped table-condensed" style="margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
-   <th style="text-align:right;"> x </th>
+   <th style="text-align:left;"> FieldNames </th>
+   <th style="text-align:right;"> Missing_NAs </th>
   </tr>
  </thead>
 <tbody>
   <tr>
+   <td style="text-align:left;"> Brew_ID </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> Brewery </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> City </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> State </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> Beer </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> Beer_ID </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> ABV </td>
    <td style="text-align:right;"> 62 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> IBU </td>
    <td style="text-align:right;"> 1005 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> Style </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> Ounces </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
 </tbody>
