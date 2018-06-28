@@ -15,4 +15,5 @@ attr(brewbeer$IBU, "shortDescription") <-
 attr(brewbeer$Ounces, "shortDescription") <- 
     "Recommended Serving Size"
 
+# Create the cookbook for descriptions
 makeCodebook(brewbeer, replace=TRUE)
