@@ -134,6 +134,7 @@ Table 10 : Scatter plot of the relationship between bitterness and alcohol yield
 plot(brewbeer$IBU, brewbeer$ABV, main="Scatterplot - Bitterness of the beer Vs Alcoholic content",xlab="International Bitterness Units (IBU)", ylab=" Alcohol By Volume (ABV)", pch=19)
 ``` 
 
+In conclusion we recognize there are an immesely diverse versions of beers, styles, and alcohol content. We also understand that different areas of the country are accustomed to higher and lower alcohol content and more or less bitter brews. This could be atrributed to raw ingredient availability or even clutural differences. If there was a recommendation on available breweries it would be likely you would find one in the Colorado region since they have the largest amount of breweries and most diverse brewing styles across the nation. It would be the most convenient in its locality to large shipping lanes that traverse the country with may large shipping companies already established. However, the large caveat in purchasing a brewery in Colorado puts you into a market saturaged by your largest competitor Miller/Coors.
 
 
 ```{r}
