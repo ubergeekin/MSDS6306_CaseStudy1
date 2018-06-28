@@ -306,7 +306,7 @@ kable( st,row.names=FALSE )  %>%
 </tbody>
 </table>
 
-There are numerous different types of beer styles. Each style of beer is created using differnt types of ingredients which include barley, malt, hops, and yeast. This also includes cider and lambic which is made from fruit juice.Some other types of beer include milk stout which uses maltose dextrose which is the ingredient that makes milk sweet and also gives the beer a familiar mouth feel like the creamy texture of milk, but with a kick! See tables 2 and 3 for listings of different beers and the breweries which product them.
+There are numerous different types of beer styles. Each style of beer is created using different types of ingredients which include barley, malt, hops, and yeast. This also includes cider and lambic which is made from fruit juice.Some other types of beer include milk stout which uses maltose dextrose which is the ingredient that makes milk sweet and also gives the beer a familiar mouth feel like the creamy texture of milk, but with a kick! See tables 2 and 3 for listings of different beers and the breweries which product them.
 
 Table 2: Lists several different styles of beer and corresponding breweries
 
@@ -577,7 +577,7 @@ kable( dt, row.names=FALSE ) %>%
 </tbody>
 </table>
 
-Table lists the average aBC and IBU by state. From this list of values we can see a wide range of values which could help us determine which states prefer milder flavored beers and which are accustomed to a higher alcohol content which is determined by the specific contents of the beer. This could be in relation to regional availability of different raw ingedients. In order to draw a real conclusion on IBU more data would have to be collected.
+Table lists the average ABV and IBU by state. From this list of values we can see a wide range of values which could help us determine which states prefer milder flavored beers and which are accustomed to a higher alcohol content which is determined by the specific contents of the beer. This could be in relation to regional availability of different raw ingredients. In order to draw a real conclusion on IBU more data would have to be collected.
 
 Table 4: Average ABV and IBU by state
 
@@ -587,65 +587,278 @@ Table 4: Average ABV and IBU by state
 # we are ignoring any NA values for the purpose of this study.
 median_abv_ibu <- aggregate( brewbeer[ , 7:8 ], list( brewbeer$State ), median, na.rm=TRUE )
 names(median_abv_ibu) <- c('State','ABV','IBU')
-median_abv_ibu
+kable( median_abv_ibu ) %>%
+  kable_styling(bootstrap_options = c("striped", "condensed"))
 ```
 
-```
-##    State    ABV  IBU
-## 1     AK 0.0560 46.0
-## 2     AL 0.0600 43.0
-## 3     AR 0.0520 39.0
-## 4     AZ 0.0550 20.5
-## 5     CA 0.0580 42.0
-## 6     CO 0.0605 40.0
-## 7     CT 0.0600 29.0
-## 8     DC 0.0625 47.5
-## 9     DE 0.0550 52.0
-## 10    FL 0.0570 55.0
-## 11    GA 0.0550 55.0
-## 12    HI 0.0540 22.5
-## 13    IA 0.0555 26.0
-## 14    ID 0.0565 39.0
-## 15    IL 0.0580 30.0
-## 16    IN 0.0580 33.0
-## 17    KS 0.0500 20.0
-## 18    KY 0.0625 31.5
-## 19    LA 0.0520 31.5
-## 20    MA 0.0540 35.0
-## 21    MD 0.0580 29.0
-## 22    ME 0.0510 61.0
-## 23    MI 0.0620 35.0
-## 24    MN 0.0560 44.5
-## 25    MO 0.0520 24.0
-## 26    MS 0.0580 45.0
-## 27    MT 0.0550 40.0
-## 28    NC 0.0570 33.5
-## 29    ND 0.0500 32.0
-## 30    NE 0.0560 35.0
-## 31    NH 0.0550 48.5
-## 32    NJ 0.0460 34.5
-## 33    NM 0.0620 51.0
-## 34    NV 0.0600 41.0
-## 35    NY 0.0550 47.0
-## 36    OH 0.0580 40.0
-## 37    OK 0.0600 35.0
-## 38    OR 0.0560 40.0
-## 39    PA 0.0570 30.0
-## 40    RI 0.0550 24.0
-## 41    SC 0.0550 30.0
-## 42    SD 0.0600   NA
-## 43    TN 0.0570 37.0
-## 44    TX 0.0550 33.0
-## 45    UT 0.0400 34.0
-## 46    VA 0.0565 42.0
-## 47    VT 0.0550 30.0
-## 48    WA 0.0555 38.0
-## 49    WI 0.0520 19.0
-## 50    WV 0.0620 57.5
-## 51    WY 0.0500 21.0
-```
+<table class="table table-striped table-condensed" style="margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> State </th>
+   <th style="text-align:right;"> ABV </th>
+   <th style="text-align:right;"> IBU </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> AK </td>
+   <td style="text-align:right;"> 0.0560 </td>
+   <td style="text-align:right;"> 46.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> AL </td>
+   <td style="text-align:right;"> 0.0600 </td>
+   <td style="text-align:right;"> 43.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> AR </td>
+   <td style="text-align:right;"> 0.0520 </td>
+   <td style="text-align:right;"> 39.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> AZ </td>
+   <td style="text-align:right;"> 0.0550 </td>
+   <td style="text-align:right;"> 20.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CA </td>
+   <td style="text-align:right;"> 0.0580 </td>
+   <td style="text-align:right;"> 42.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CO </td>
+   <td style="text-align:right;"> 0.0605 </td>
+   <td style="text-align:right;"> 40.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CT </td>
+   <td style="text-align:right;"> 0.0600 </td>
+   <td style="text-align:right;"> 29.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> DC </td>
+   <td style="text-align:right;"> 0.0625 </td>
+   <td style="text-align:right;"> 47.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> DE </td>
+   <td style="text-align:right;"> 0.0550 </td>
+   <td style="text-align:right;"> 52.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> FL </td>
+   <td style="text-align:right;"> 0.0570 </td>
+   <td style="text-align:right;"> 55.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GA </td>
+   <td style="text-align:right;"> 0.0550 </td>
+   <td style="text-align:right;"> 55.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> HI </td>
+   <td style="text-align:right;"> 0.0540 </td>
+   <td style="text-align:right;"> 22.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> IA </td>
+   <td style="text-align:right;"> 0.0555 </td>
+   <td style="text-align:right;"> 26.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ID </td>
+   <td style="text-align:right;"> 0.0565 </td>
+   <td style="text-align:right;"> 39.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> IL </td>
+   <td style="text-align:right;"> 0.0580 </td>
+   <td style="text-align:right;"> 30.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> IN </td>
+   <td style="text-align:right;"> 0.0580 </td>
+   <td style="text-align:right;"> 33.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> KS </td>
+   <td style="text-align:right;"> 0.0500 </td>
+   <td style="text-align:right;"> 20.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> KY </td>
+   <td style="text-align:right;"> 0.0625 </td>
+   <td style="text-align:right;"> 31.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> LA </td>
+   <td style="text-align:right;"> 0.0520 </td>
+   <td style="text-align:right;"> 31.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> MA </td>
+   <td style="text-align:right;"> 0.0540 </td>
+   <td style="text-align:right;"> 35.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> MD </td>
+   <td style="text-align:right;"> 0.0580 </td>
+   <td style="text-align:right;"> 29.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ME </td>
+   <td style="text-align:right;"> 0.0510 </td>
+   <td style="text-align:right;"> 61.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> MI </td>
+   <td style="text-align:right;"> 0.0620 </td>
+   <td style="text-align:right;"> 35.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> MN </td>
+   <td style="text-align:right;"> 0.0560 </td>
+   <td style="text-align:right;"> 44.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> MO </td>
+   <td style="text-align:right;"> 0.0520 </td>
+   <td style="text-align:right;"> 24.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> MS </td>
+   <td style="text-align:right;"> 0.0580 </td>
+   <td style="text-align:right;"> 45.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> MT </td>
+   <td style="text-align:right;"> 0.0550 </td>
+   <td style="text-align:right;"> 40.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NC </td>
+   <td style="text-align:right;"> 0.0570 </td>
+   <td style="text-align:right;"> 33.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ND </td>
+   <td style="text-align:right;"> 0.0500 </td>
+   <td style="text-align:right;"> 32.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NE </td>
+   <td style="text-align:right;"> 0.0560 </td>
+   <td style="text-align:right;"> 35.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NH </td>
+   <td style="text-align:right;"> 0.0550 </td>
+   <td style="text-align:right;"> 48.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NJ </td>
+   <td style="text-align:right;"> 0.0460 </td>
+   <td style="text-align:right;"> 34.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NM </td>
+   <td style="text-align:right;"> 0.0620 </td>
+   <td style="text-align:right;"> 51.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NV </td>
+   <td style="text-align:right;"> 0.0600 </td>
+   <td style="text-align:right;"> 41.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NY </td>
+   <td style="text-align:right;"> 0.0550 </td>
+   <td style="text-align:right;"> 47.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OH </td>
+   <td style="text-align:right;"> 0.0580 </td>
+   <td style="text-align:right;"> 40.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OK </td>
+   <td style="text-align:right;"> 0.0600 </td>
+   <td style="text-align:right;"> 35.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OR </td>
+   <td style="text-align:right;"> 0.0560 </td>
+   <td style="text-align:right;"> 40.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PA </td>
+   <td style="text-align:right;"> 0.0570 </td>
+   <td style="text-align:right;"> 30.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> RI </td>
+   <td style="text-align:right;"> 0.0550 </td>
+   <td style="text-align:right;"> 24.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SC </td>
+   <td style="text-align:right;"> 0.0550 </td>
+   <td style="text-align:right;"> 30.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SD </td>
+   <td style="text-align:right;"> 0.0600 </td>
+   <td style="text-align:right;"> NA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TN </td>
+   <td style="text-align:right;"> 0.0570 </td>
+   <td style="text-align:right;"> 37.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TX </td>
+   <td style="text-align:right;"> 0.0550 </td>
+   <td style="text-align:right;"> 33.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> UT </td>
+   <td style="text-align:right;"> 0.0400 </td>
+   <td style="text-align:right;"> 34.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VA </td>
+   <td style="text-align:right;"> 0.0565 </td>
+   <td style="text-align:right;"> 42.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> VT </td>
+   <td style="text-align:right;"> 0.0550 </td>
+   <td style="text-align:right;"> 30.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> WA </td>
+   <td style="text-align:right;"> 0.0555 </td>
+   <td style="text-align:right;"> 38.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> WI </td>
+   <td style="text-align:right;"> 0.0520 </td>
+   <td style="text-align:right;"> 19.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> WV </td>
+   <td style="text-align:right;"> 0.0620 </td>
+   <td style="text-align:right;"> 57.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> WY </td>
+   <td style="text-align:right;"> 0.0500 </td>
+   <td style="text-align:right;"> 21.0 </td>
+  </tr>
+</tbody>
+</table>
 
-The next secion of analysis covers ABV. Some states have enacted what are termed "blue laws" which limit the amount of alcohol contained within a beverage, or control the location in which you are able to purchase high proof beverages. To this effect we can see that some states have a much lower alcohol content. Utah which has some of the most strict liquor laws in the United States has the lowest average ABV of 4% or a proof rating of 8. This could be due to a state control, or possibly be related to other holistic cultural differences. Washington DC posts the highest alcohol content with a value of 6.25% or a proof raing of 12.5. See table 5 for details on ABV stats according to state.
+The next section of analysis covers ABV. Some states have enacted what are termed "blue laws" which limit the amount of alcohol contained within a beverage, or control the location in which you are able to purchase high proof beverages. To this effect we can see that some states have a much lower alcohol content. Utah which has some of the most strict liquor laws in the United States has the lowest average ABV of 4% or a proof rating of 8. This could be due to a state control, or possibly be related to other holistic cultural differences. Washington DC posts the highest alcohol content with a value of 6.25% or a proof rating of 12.5. See table 5 for details on ABV stats according to state.
 
 Table 5: Median ABV by State
 
@@ -675,7 +888,7 @@ ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),] , aes( State, IBU ) ) +
 
 ![](Case_Study1_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
-Colorado has not only the largest amount of breweries in our finding, it also produces the highest ABV rated beer, coming in at a staggering 12.8% alcohol content. That would equate to 25.6 proof, or the same alcohol content of some apertifs and cordials. Colorodo brewing company, Upslope Brewing Company produces this particularly strong beer. See table 7 for specific details concerning this specific beer and its producer.
+Colorado has not only the largest amount of breweries in our finding, it also produces the highest ABV rated beer, coming in at a staggering 12.8% alcohol content. That would equate to 25.6 proof, or the same alcohol content of some aperitifs and cordials. Colorado brewing company, Upslope Brewing Company produces this particularly strong beer. See table 7 for specific details concerning this specific beer and its producer.
 
 Table 7: Highest Rated Alcoholic Beer
 
@@ -709,7 +922,7 @@ kable( head( brewbeer[order(brewbeer$ABV, decreasing=TRUE),c(4,2,5,7,9) ], 1) ) 
 </tbody>
 </table>
 
-Oregon has the highest IBU beer, which is an American Double / Imperial IPA. This shouldn't come as a surprise since IPA style beers have the highest concentration of hops of any beer style. Also a very well preserved beer accompanying the sheer bitterness of this brew. This could also be in direct correlation of the availability of cascase hops which are almost solely produced in the state of Washington and within a close proximity to Oregon.
+Oregon has the highest IBU beer, which is an American Double / Imperial IPA. This shouldn't come as a surprise since IPA style beers have the highest concentration of hops of any beer style. Also a very well preserved beer accompanying the sheer bitterness of this brew. This could also be in direct correlation of the availability of cascade hops which are almost solely produced in the state of Washington and within a close proximity to Oregon.
 
 Table 8: Highest Rated Bitterest Beer
 
@@ -742,7 +955,7 @@ kable( head( brewbeer[order(brewbeer$IBU, decreasing=TRUE),c(4,2,5,8,9) ], 1) ) 
 </tbody>
 </table>
 
-Table 9 gives a summary overview of ABV values across the entire United Sate, showing a wide range of alchol content across the nation. We range from 1/10% to 12.8%. The average value of ABV comes in just below 6% at 5.97% while the absolute center value equates to 5.6%. This stands to reason as there area larger perentage of lower alcohol content beers with a few high proof beers which are defintely outliers.
+Table 9 gives a summary overview of ABV values across the entire United Sate, showing a wide range of alcohol content across the nation. We range from 1/10% to 12.8%. The average value of ABV comes in just below 6% at 5.97% while the absolute center value equates to 5.6%. This stands to reason as there area larger percentage of lower alcohol content beers with a few high proof beers which are definitely outliers.
 
 Table 9: Summary statistics for the ABV
 
@@ -790,7 +1003,7 @@ kable(data.frame(Summary_Statistics_Value = unclass(summary(brewbeer$ABV))))%>%
 </tbody>
 </table>
 
-For the purpose of this analysis we can conclude less bitter beer typically has a lower alcohol content. This stands to reason considering the highest ABV beers are double and triple, or even quadruple Belgian stype ales which contain a larger amount of roasted barley to combat the highly sweet malt content.
+For the purpose of this analysis we can conclude less bitter beer typically has a lower alcohol content. This stands to reason considering the highest ABV beers are double and triple, or even quadruple Belgian style ales which contain a larger amount of roasted barley to combat the highly sweet malt content.
 
 Table 10 : Scatter plot of the relationship between bitterness and alcohol yield
 
@@ -800,7 +1013,7 @@ plot(brewbeer$IBU, brewbeer$ABV, main="Scatterplot - Bitterness of the beer Vs A
 
 ![](Case_Study1_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
-In conclusion we recognize there are an immesely diverse versions of beers, styles, and alcohol content. We also understand that different areas of the country are accustomed to higher and lower alcohol content and more or less bitter brews. This could be atrributed to raw ingredient availability or even clutural differences. If there was a recommendation on available breweries it would be likely you would find one in the Colorado region since they have the largest amount of breweries and most diverse brewing styles across the nation. It would be the most convenient in its locality to large shipping lanes that traverse the country with may large shipping companies already established. However, the large caveat in purchasing a brewery in Colorado puts you into a market saturaged by your largest competitor Miller/Coors.
+In conclusion we recognize there are an immensely diverse versions of beers, styles, and alcohol content. We also understand that different areas of the country are accustomed to higher and lower alcohol content and more or less bitter brews. This could be attributed to raw ingredient availability or even cultural differences. If there was a recommendation on available breweries it would be likely you would find one in the Colorado region since they have the largest amount of breweries and most diverse brewing styles across the nation. It would be the most convenient in its locality to large shipping lanes that traverse the country with may large shipping companies already established. However, the large caveat in purchasing a brewery in Colorado puts you into a market saturated by your largest competitor Miller/Coors.
 
 
 

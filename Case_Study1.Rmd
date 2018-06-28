@@ -46,7 +46,7 @@ kable( st,row.names=FALSE )  %>%
   kable_styling(bootstrap_options = c("striped", "condensed"), full_width = F)
 ```
 
-There are numerous different types of beer styles. Each style of beer is created using differnt types of ingredients which include barley, malt, hops, and yeast. This also includes cider and lambic which is made from fruit juice.Some other types of beer include milk stout which uses maltose dextrose which is the ingredient that makes milk sweet and also gives the beer a familiar mouth feel like the creamy texture of milk, but with a kick! See tables 2 and 3 for listings of different beers and the breweries which product them.
+There are numerous different types of beer styles. Each style of beer is created using different types of ingredients which include barley, malt, hops, and yeast. This also includes cider and lambic which is made from fruit juice.Some other types of beer include milk stout which uses maltose dextrose which is the ingredient that makes milk sweet and also gives the beer a familiar mouth feel like the creamy texture of milk, but with a kick! See tables 2 and 3 for listings of different beers and the breweries which product them.
 
 Table 2: Lists several different styles of beer and corresponding breweries
 ```{r}
@@ -81,7 +81,7 @@ kable( dt, row.names=FALSE ) %>%
   kable_styling(bootstrap_options = c("striped", "condensed"))
 ``` 
 
-Table lists the average aBC and IBU by state. From this list of values we can see a wide range of values which could help us determine which states prefer milder flavored beers and which are accustomed to a higher alcohol content which is determined by the specific contents of the beer. This could be in relation to regional availability of different raw ingedients. In order to draw a real conclusion on IBU more data would have to be collected.
+Table lists the average ABV and IBU by state. From this list of values we can see a wide range of values which could help us determine which states prefer milder flavored beers and which are accustomed to a higher alcohol content which is determined by the specific contents of the beer. This could be in relation to regional availability of different raw ingredients. In order to draw a real conclusion on IBU more data would have to be collected.
 
 Table 4: Average ABV and IBU by state
 ```{r}
@@ -90,10 +90,11 @@ Table 4: Average ABV and IBU by state
 # we are ignoring any NA values for the purpose of this study.
 median_abv_ibu <- aggregate( brewbeer[ , 7:8 ], list( brewbeer$State ), median, na.rm=TRUE )
 names(median_abv_ibu) <- c('State','ABV','IBU')
-median_abv_ibu
+kable( median_abv_ibu, row.names=FALSE  ) %>%
+  kable_styling(bootstrap_options = c("striped", "condensed"))
 ``` 
 
-The next secion of analysis covers ABV. Some states have enacted what are termed "blue laws" which limit the amount of alcohol contained within a beverage, or control the location in which you are able to purchase high proof beverages. To this effect we can see that some states have a much lower alcohol content. Utah which has some of the most strict liquor laws in the United States has the lowest average ABV of 4% or a proof rating of 8. This could be due to a state control, or possibly be related to other holistic cultural differences. Washington DC posts the highest alcohol content with a value of 6.25% or a proof raing of 12.5. See table 5 for details on ABV stats according to state.
+The next section of analysis covers ABV. Some states have enacted what are termed "blue laws" which limit the amount of alcohol contained within a beverage, or control the location in which you are able to purchase high proof beverages. To this effect we can see that some states have a much lower alcohol content. Utah which has some of the most strict liquor laws in the United States has the lowest average ABV of 4% or a proof rating of 8. This could be due to a state control, or possibly be related to other holistic cultural differences. Washington DC posts the highest alcohol content with a value of 6.25% or a proof rating of 12.5. See table 5 for details on ABV stats according to state.
 
 Table 5: Median ABV by State
 ```{r fig.height=10}
@@ -117,7 +118,7 @@ ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),] , aes( State, IBU ) ) +
     theme(plot.title = element_text(hjust = 0.5))
 ```
 
-Colorado has not only the largest amount of breweries in our finding, it also produces the highest ABV rated beer, coming in at a staggering 12.8% alcohol content. That would equate to 25.6 proof, or the same alcohol content of some apertifs and cordials. Colorodo brewing company, Upslope Brewing Company produces this particularly strong beer. See table 7 for specific details concerning this specific beer and its producer.
+Colorado has not only the largest amount of breweries in our finding, it also produces the highest ABV rated beer, coming in at a staggering 12.8% alcohol content. That would equate to 25.6 proof, or the same alcohol content of some aperitifs and cordials. Colorado brewing company, Upslope Brewing Company produces this particularly strong beer. See table 7 for specific details concerning this specific beer and its producer.
 
 Table 7: Highest Rated Alcoholic Beer
 ```{r}
@@ -127,7 +128,7 @@ kable( head( brewbeer[order(brewbeer$ABV, decreasing=TRUE),c(4,2,5,7,9) ], 1) ) 
   kable_styling(bootstrap_options = c("striped", "condensed"))
 ```
 
-Oregon has the highest IBU beer, which is an American Double / Imperial IPA. This shouldn't come as a surprise since IPA style beers have the highest concentration of hops of any beer style. Also a very well preserved beer accompanying the sheer bitterness of this brew. This could also be in direct correlation of the availability of cascase hops which are almost solely produced in the state of Washington and within a close proximity to Oregon.
+Oregon has the highest IBU beer, which is an American Double / Imperial IPA. This shouldn't come as a surprise since IPA style beers have the highest concentration of hops of any beer style. Also a very well preserved beer accompanying the sheer bitterness of this brew. This could also be in direct correlation of the availability of cascade hops which are almost solely produced in the state of Washington and within a close proximity to Oregon.
 
 Table 8: Highest Rated Bitterest Beer
 ```{r}
@@ -136,7 +137,7 @@ kable( head( brewbeer[order(brewbeer$IBU, decreasing=TRUE),c(4,2,5,8,9) ], 1) ) 
   kable_styling(bootstrap_options = c("striped", "condensed"))
 ``` 
 
-Table 9 gives a summary overview of ABV values across the entire United Sate, showing a wide range of alchol content across the nation. We range from 1/10% to 12.8%. The average value of ABV comes in just below 6% at 5.97% while the absolute center value equates to 5.6%. This stands to reason as there area larger perentage of lower alcohol content beers with a few high proof beers which are defintely outliers.
+Table 9 gives a summary overview of ABV values across the entire United Sate, showing a wide range of alcohol content across the nation. We range from 1/10% to 12.8%. The average value of ABV comes in just below 6% at 5.97% while the absolute center value equates to 5.6%. This stands to reason as there area larger percentage of lower alcohol content beers with a few high proof beers which are definitely outliers.
 
 Table 9: Summary statistics for the ABV
 ```{r}
@@ -144,14 +145,14 @@ kable(data.frame(Summary_Statistics_Value = unclass(summary(brewbeer$ABV))))%>%
   kable_styling(bootstrap_options = c("striped", "condensed"), full_width = F)
 ``` 
 
-For the purpose of this analysis we can conclude less bitter beer typically has a lower alcohol content. This stands to reason considering the highest ABV beers are double and triple, or even quadruple Belgian stype ales which contain a larger amount of roasted barley to combat the highly sweet malt content.
+For the purpose of this analysis we can conclude less bitter beer typically has a lower alcohol content. This stands to reason considering the highest ABV beers are double and triple, or even quadruple Belgian style ales which contain a larger amount of roasted barley to combat the highly sweet malt content.
 
 Table 10 : Scatter plot of the relationship between bitterness and alcohol yield
 ```{r}
 plot(brewbeer$IBU, brewbeer$ABV, main="Scatterplot - Bitterness of the beer Vs Alcoholic content",xlab="International Bitterness Units (IBU)", ylab=" Alcohol By Volume (ABV)", pch=19)
 ``` 
 
-In conclusion we recognize there are an immesely diverse versions of beers, styles, and alcohol content. We also understand that different areas of the country are accustomed to higher and lower alcohol content and more or less bitter brews. This could be atrributed to raw ingredient availability or even clutural differences. If there was a recommendation on available breweries it would be likely you would find one in the Colorado region since they have the largest amount of breweries and most diverse brewing styles across the nation. It would be the most convenient in its locality to large shipping lanes that traverse the country with may large shipping companies already established. However, the large caveat in purchasing a brewery in Colorado puts you into a market saturaged by your largest competitor Miller/Coors.
+In conclusion we recognize there are an immensely diverse versions of beers, styles, and alcohol content. We also understand that different areas of the country are accustomed to higher and lower alcohol content and more or less bitter brews. This could be attributed to raw ingredient availability or even cultural differences. If there was a recommendation on available breweries it would be likely you would find one in the Colorado region since they have the largest amount of breweries and most diverse brewing styles across the nation. It would be the most convenient in its locality to large shipping lanes that traverse the country with may large shipping companies already established. However, the large caveat in purchasing a brewery in Colorado puts you into a market saturated by your largest competitor Miller/Coors.
 
 
 ```{r}
