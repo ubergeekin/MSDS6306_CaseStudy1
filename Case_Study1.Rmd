@@ -13,7 +13,6 @@ knitr::opts_chunk$set(echo = TRUE)
 library(plyr)
 library(ggplot2)
 library(kableExtra)
-library(mapproj)
 library(dataMaid)
 ```
 
@@ -27,28 +26,14 @@ Table 1: Contains a total count of the number of breweries by their respective s
 brew <- read.csv(file = "breweries.csv", header = TRUE, sep = ",", strip.white = TRUE)
 # Assign the count function against the State column to the variable name st
 st <- count(brew, "State")
-states <- map_data("state")
-state_names <- data.frame( region = tolower(state.name), state.abb = state.abb)
-st <- merge( st, state_names, by.x = "State", by.y = "state.abb" )
-choro <- merge(states, st, sort = FALSE, by = "region")
-choro <- choro[order(choro$order), ]
-ggplot(choro, aes(long, lat)) +
-    geom_polygon(aes(group = group, fill = freq)) +
-    coord_map("albers",  at0 = 45.5, lat1 = 29.5) +
-    labs(title="Number of Breweries by State", x = "", y = "") +
-    theme(axis.text.x = element_blank(),
-          axis.text.y = element_blank(),
-          axis.ticks = element_blank(),
-          rect = element_blank(),
-          plot.title = element_text(hjust = 0.5))
 # Display the st variable output
 kable( st,row.names=FALSE )  %>%
   kable_styling(bootstrap_options = c("striped", "condensed"), full_width = F)
 ```
 
-There are numerous different types of beer styles. Each style of beer is created using differnt types of ingredients which include barley, malt, hops, and yeast. This also includes cider and lambic which is made from fruit juice. 
+There are numerous different types of beer styles. Each style of beer is created using differnt types of ingredients which include barley, malt, hops, and yeast. This also includes cider and lambic which is made from fruit juice.Some other types of beer include milk stout which uses maltose dextrose which is the ingredient that makes milk sweet and also gives the beer a familiar mouth feel like the creamy texture of milk, but with a kick! See tables 2 and 3 for listings of different beers and the breweries which product them.
 
-Table 2: Lists several different styles of beer and corresponding data including hard cider
+Table 2: Lists several different styles of beer and corresponding breweries
 ```{r}
 # Question 2. Merge beer data with the breweries data. Print the first 6 observations and the last six observations to check the merged file. 
 # Read the beers.csv and assign it to the beer variable
@@ -60,10 +45,16 @@ names(brewbeer) <- c('Brew_ID','Brewery','City','State','Beer','Beer_ID','ABV','
 # Display the first 6 lines of the merged dataset
 kable( head(brewbeer),row.names=FALSE ) %>%
   kable_styling(bootstrap_options = c("striped", "condensed"))
+```
+
+Table3: Lists additional styles of beer and corresponding breweries
+```{r}
 # Display the last 6 lines of the merged dataset
 kable( tail(brewbeer),row.names=FALSE ) %>%
   kable_styling(bootstrap_options = c("striped", "condensed"))
 ``` 
+
+Due to missing values provided in the data used for the analysis we cannot give a true value of the averages to some of the values, but a rough estimate based on the information provided. For transparency we have included the portions of data which are missing. While International Bittering Units (IBU) may not be a real game changer, it could give us a feel for which regional areas prefer a more bitter beer, or possibly have better access to hops with high IBU values based on acidity. The gap in in Alcohol By Volume (ABV) is considerably smaller and should have little consequence on the analysis. See table 3 for the exhaustive list of missing values.
 
 Table 3: List of missing values in each column
 ```{r}
@@ -74,41 +65,44 @@ dt <- data.frame( FieldNames = names(brewbeer), Missing_NAs = dt)
 kable( dt, row.names=FALSE ) %>%
   kable_styling(bootstrap_options = c("striped", "condensed"))
 ``` 
-Analyzing the data, we have a large gap in IBU's of 1005 missing values out of 2410 rows.  There is also missing values in ABV, but small enough to continue with our analysis.
 
+Table lists the average aBC and IBU by state. From this list of values we can see a wide range of values which could help us determine which states prefer milder flavored beers and which are accustomed to a higher alcohol content which is determined by the specific contents of the beer. This could be in relation to regional availability of different raw ingedients. In order to draw a real conclusion on IBU more data would have to be collected.
+
+Table 4: Average ABV and IBU by state
 ```{r}
 # Question 4. Compute the median alcohol content and international bitterness
 # aggregate function to get the median value for ABV and IBU
 # we are ignoring any NA values for the purpose of this study.
 median_abv_ibu <- aggregate( brewbeer[ , 7:8 ], list( brewbeer$State ), median, na.rm=TRUE )
 names(median_abv_ibu) <- c('State','ABV','IBU')
+median_abv_ibu
 ``` 
 
-Table 4.1: Median ABV by State
+The next secion of analysis covers ABV. Some states have enacted what are termed "blue laws" which limit the amount of alcohol contained within a beverage, or control the location in which you are able to purchase high proof beverages. To this effect we can see that some states have a much lower alcohol content. Utah which has some of the most strict liquor laws in the United States has the lowest average ABV of 4% or a proof rating of 8. This could be due to a state control, or possibly be related to other holistic cultural differences. Washington DC posts the highest alcohol content with a value of 6.25% or a proof raing of 12.5. See table 5 for details on ABV stats according to state.
+
+Table 5: Median ABV by State
 ```{r fig.height=10}
-# Add Labels
+# Add Labels to the plot
 ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),], aes( State, ABV ) ) +
     geom_bar(stat="identity") +
     labs(title="Alcohol by Volume By State",x ="Alcohol by Volume", y = "State") +
-    coord_flip() +
-    theme(plot.title = element_text(hjust = 0.5))
+    coord_flip()
 ```
 
-The chart shows us that the District of Columbia had the highest median Alcohol by Volume (ABV) at 6.25% and Utah had the lowest at 4%.
+Maine comes in with the highest average IBU value in our analysis. Be reminded that our IBU values were not complete. In order to know more about bitterness more data should be collected to have a higher confidence level in the findings. See table 6 for details on IBU by state.
 
-Table 4.2: Median IBU by State
+Table 6: Median IBU by State
 ```{r fig.height=10}
 # Add Labels
 ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),] , aes( State, IBU ) ) +
     geom_bar(stat="identity") +
     labs(title="International Bittering Unit By State",x ="International Bittering Unit", y = "State") +
-    coord_flip() +
-    theme(plot.title = element_text(hjust = 0.5))
+    coord_flip()
 ```
 
-Maine has the highest median International Bittering Unit (IBU) of 61, while Hawaii has the lowest at 22.5 IBUs.
+Colorado has not only the largest amount of breweries in our finding, it also produces the highest ABV rated beer, coming in at a staggering 12.8% alcohol content. That would equate to 25.6 proof, or the same alcohol content of some apertifs and cordials. Colorodo brewing company, Upslope Brewing Company produces this particularly strong beer. See table 7 for specific details concerning this specific beer and its producer.
 
-Table 5.1: Highest Rated Alcoholic Beer
+Table 7: Highest Rated Alcoholic Beer
 ```{r}
 # Question 5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer? 
 # Order by ABV to get the top state
@@ -116,31 +110,31 @@ kable( head( brewbeer[order(brewbeer$ABV, decreasing=TRUE),c(4,2,5,7,9) ], 1) ) 
   kable_styling(bootstrap_options = c("striped", "condensed"))
 ```
 
-We show that Colorodo brewing company, Upslope Brewing Company, has the highest alcoholic beer at 12.8%.
+Oregon has the highest IBU beer, which is an American Double / Imperial IPA. This shouldn't come as a surprise since IPA style beers have the highest concentration of hops of any beer style. Also a very well preserved beer accompanying the sheer bitterness of this brew. This could also be in direct correlation of the availability of cascase hops which are almost solely produced in the state of Washington and within a close proximity to Oregon.
 
-Table 5.2: Highest Rated Bitterest Beer
+Table 8: Highest Rated Bitterest Beer
 ```{r}
 # Order by IBU to get the top state
 kable( head( brewbeer[order(brewbeer$IBU, decreasing=TRUE),c(4,2,5,8,9) ], 1) ) %>%
   kable_styling(bootstrap_options = c("striped", "condensed"))
 ``` 
 
-We show that Oregon has the highest IBU beer, which is an American Double / Imperial IPA.
+Table 9 gives a summary overview of ABV values across the entire United Sate, showing a wide range of alchol content across the nation. We range from 1/10% to 12.8%. The average value of ABV comes in just below 6% at 5.97% while the absolute center value equates to 5.6%. This stands to reason as there area larger perentage of lower alcohol content beers with a few high proof beers which are defintely outliers.
 
-Table 6.1: Summary statistics for the ABV variable. 
+Table 9: Summary statistics for the ABV
 ```{r}
 kable(data.frame(Summary_Statistics_Value = unclass(summary(brewbeer$ABV))))%>%
   kable_styling(bootstrap_options = c("striped", "condensed"), full_width = F)
 ``` 
-The summary shows that the mean is slightly higher than the median, which means that the distribution of the ABV variable will be right skewed.
 
-Table 7.1 : Scatter plot to show the relationship between the bitterness of the beer and its alcoholic content.
+For the purpose of this analysis we can conclude less bitter beer typically has a lower alcohol content. This stands to reason considering the highest ABV beers are double and triple, or even quadruple Belgian stype ales which contain a larger amount of roasted barley to combat the highly sweet malt content.
+
+Table 10 : Scatter plot of the relationship between bitterness and alcohol yield
 ```{r}
 plot(brewbeer$IBU, brewbeer$ABV, main="Scatterplot - Bitterness of the beer Vs Alcoholic content",xlab="International Bitterness Units (IBU)", ylab=" Alcohol By Volume (ABV)", pch=19)
 ``` 
 
-The scatter plot shows a positive relationship between IBU & ABV values.
-There is a positive correlation between IBU & ABV values.
+
 
 ```{r}
 #makeCodebook(brewbeer)
