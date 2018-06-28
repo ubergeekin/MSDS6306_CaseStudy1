@@ -7,7 +7,7 @@ names(brewbeer) <- c('Brewery_id','Brewery','City','State','Beer','Beer_ID','ABV
 
 # Provide descriptions of each variable
 attr(brewbeer$ABV, "shortDescription") <-
-    "Alcohol by Volume, measurement is not in percentage"
+    "Alcohol by Volume"
 
 attr(brewbeer$IBU, "shortDescription") <-
     "International Bittering Units"

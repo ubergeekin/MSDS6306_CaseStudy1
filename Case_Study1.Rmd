@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(plyr)
 library(ggplot2)
 library(kableExtra)
+library(mapproj)
 library(dataMaid)
 ```
 
@@ -26,6 +27,20 @@ Table 1: Contains a total count of the number of breweries by their respective s
 brew <- read.csv(file = "breweries.csv", header = TRUE, sep = ",", strip.white = TRUE)
 # Assign the count function against the State column to the variable name st
 st <- count(brew, "State")
+states <- map_data("state")
+state_names <- data.frame( region = tolower(state.name), state.abb = state.abb)
+st <- merge( st, state_names, by.x = "State", by.y = "state.abb" )
+choro <- merge(states, st, sort = FALSE, by = "region")
+choro <- choro[order(choro$order), ]
+ggplot(choro, aes(long, lat)) +
+    geom_polygon(aes(group = group, fill = freq)) +
+    coord_map("albers",  at0 = 45.5, lat1 = 29.5) +
+    labs(title="Number of Breweries by State", x = "", y = "") +
+    theme(axis.text.x = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks = element_blank(),
+          rect = element_blank(),
+          plot.title = element_text(hjust = 0.5))
 # Display the st variable output
 kable( st,row.names=FALSE )  %>%
   kable_styling(bootstrap_options = c("striped", "condensed"), full_width = F)
@@ -86,7 +101,8 @@ Table 5: Median ABV by State
 ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),], aes( State, ABV ) ) +
     geom_bar(stat="identity") +
     labs(title="Alcohol by Volume By State",x ="Alcohol by Volume", y = "State") +
-    coord_flip()
+    coord_flip() +
+    theme(plot.title = element_text(hjust = 0.5))
 ```
 
 Maine comes in with the highest average IBU value in our analysis. Be reminded that our IBU values were not complete. In order to know more about bitterness more data should be collected to have a higher confidence level in the findings. See table 6 for details on IBU by state.
@@ -97,7 +113,8 @@ Table 6: Median IBU by State
 ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),] , aes( State, IBU ) ) +
     geom_bar(stat="identity") +
     labs(title="International Bittering Unit By State",x ="International Bittering Unit", y = "State") +
-    coord_flip()
+    coord_flip() +
+    theme(plot.title = element_text(hjust = 0.5))
 ```
 
 Colorado has not only the largest amount of breweries in our finding, it also produces the highest ABV rated beer, coming in at a staggering 12.8% alcohol content. That would equate to 25.6 proof, or the same alcohol content of some apertifs and cordials. Colorodo brewing company, Upslope Brewing Company produces this particularly strong beer. See table 7 for specific details concerning this specific beer and its producer.
