@@ -16,3 +16,5 @@ attr(brewbeer$Ounces, "shortDescription") <-
     "Recommended Serving Size"
 
 makeCodebook(brewbeer, replace=TRUE)
+
+#Edit this
