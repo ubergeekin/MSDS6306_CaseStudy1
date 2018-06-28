@@ -10,7 +10,7 @@ output:
 
 
 ### MSDS 6306: Case Study 1 Introduction
-The following document represents a case study of craft breweries and the beers they produce across the United States. In this study we will make some general observations with the hope of providing information concerning details of the craft brewery market in the United States. This study does not represent an exhaustive list of craft breweries and their beers, but does contain general information about the overall craft beer market.Craft breweries are growing across the nation, as we can see in the following table.
+The following document represents a case study of craft breweries and the beers they produce across the United States. In this study we will make some general observations with the hope of providing information concerning details of the craft brewery market in the United States. This study does not represent an exhaustive list of craft breweries and their beers, but does contain general information about the overall craft beer market. Craft breweries are growing across the nation, as we can see in the following table.
 
 Table 1: Contains a total count of the number of breweries by their respective state
 
@@ -414,7 +414,7 @@ kable( head(brewbeer),row.names=FALSE ) %>%
 </tbody>
 </table>
 
-Table3: Lists additional styles of beer and corresponding breweries
+Table 3: Lists additional styles of beer and corresponding breweries
 
 ```r
 # Display the last 6 lines of the merged dataset
@@ -513,9 +513,9 @@ kable( tail(brewbeer),row.names=FALSE ) %>%
 </tbody>
 </table>
 
-Due to missing values provided in the data used for the analysis we cannot give a true value of the averages to some of the values, but a rough estimate based on the information provided. For transparency we have included the portions of data which are missing. While International Bittering Units (IBU) may not be a real game changer, it could give us a feel for which regional areas prefer a more bitter beer, or possibly have better access to hops with high IBU values based on acidity. The gap in in Alcohol By Volume (ABV) is considerably smaller and should have little consequence on the analysis. See table 3 for the exhaustive list of missing values.
+Due to missing values provided in the data used for the analysis we cannot give a true value of the averages to some of the values, but a rough estimate based on the information provided. For transparency we have included the portions of data which are missing. While International Bittering Units (IBU) may not be a real game changer, it could give us a feel for which regional areas prefer a more bitter beer, or possibly have better access to hops with high IBU values based on acidity. The gap in Alcohol By Volume (ABV) is considerably smaller and should have little consequence on the analysis. See table 3 for the exhaustive list of missing values.
 
-Table 3: List of missing values in each column
+Table 4: List of missing values in each column
 
 ```r
 # Question 3. Report the number of NA's in each column.
@@ -577,9 +577,9 @@ kable( dt, row.names=FALSE ) %>%
 </tbody>
 </table>
 
-Table lists the average ABV and IBU by state. From this list of values we can see a wide range of values which could help us determine which states prefer milder flavored beers and which are accustomed to a higher alcohol content which is determined by the specific contents of the beer. This could be in relation to regional availability of different raw ingredients. In order to draw a real conclusion on IBU more data would have to be collected.
+Table 5 lists the average ABV and IBU by state. From this list of values we can see a wide range of values which could help us determine which states prefer milder flavored beers and which are accustomed to a higher alcohol content which is determined by the specific contents of the beer. This could be in relation to regional availability of different raw ingredients. In order to draw a real conclusion on IBU more data would have to be collected.
 
-Table 4: Average ABV and IBU by state
+Table 5: Average ABV and IBU by state
 
 ```r
 # Question 4. Compute the median alcohol content and international bitterness
@@ -587,7 +587,7 @@ Table 4: Average ABV and IBU by state
 # we are ignoring any NA values for the purpose of this study.
 median_abv_ibu <- aggregate( brewbeer[ , 7:8 ], list( brewbeer$State ), median, na.rm=TRUE )
 names(median_abv_ibu) <- c('State','ABV','IBU')
-kable( median_abv_ibu ) %>%
+kable( median_abv_ibu, row.names=FALSE  ) %>%
   kable_styling(bootstrap_options = c("striped", "condensed"))
 ```
 
@@ -860,7 +860,7 @@ kable( median_abv_ibu ) %>%
 
 The next section of analysis covers ABV. Some states have enacted what are termed "blue laws" which limit the amount of alcohol contained within a beverage, or control the location in which you are able to purchase high proof beverages. To this effect we can see that some states have a much lower alcohol content. Utah which has some of the most strict liquor laws in the United States has the lowest average ABV of 4% or a proof rating of 8. This could be due to a state control, or possibly be related to other holistic cultural differences. Washington DC posts the highest alcohol content with a value of 6.25% or a proof rating of 12.5. See table 5 for details on ABV stats according to state.
 
-Table 5: Median ABV by State
+Table 6: Median ABV by State
 
 ```r
 # Add Labels to the plot
@@ -875,7 +875,7 @@ ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),], aes( State, ABV ) ) +
 
 Maine comes in with the highest average IBU value in our analysis. Be reminded that our IBU values were not complete. In order to know more about bitterness more data should be collected to have a higher confidence level in the findings. See table 6 for details on IBU by state.
 
-Table 6: Median IBU by State
+Table 7: Median IBU by State
 
 ```r
 # Add Labels
@@ -890,7 +890,7 @@ ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),] , aes( State, IBU ) ) +
 
 Colorado has not only the largest amount of breweries in our finding, it also produces the highest ABV rated beer, coming in at a staggering 12.8% alcohol content. That would equate to 25.6 proof, or the same alcohol content of some aperitifs and cordials. Colorado brewing company, Upslope Brewing Company produces this particularly strong beer. See table 7 for specific details concerning this specific beer and its producer.
 
-Table 7: Highest Rated Alcoholic Beer
+Table 8: Highest Rated Alcoholic Beer
 
 ```r
 # Question 5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer? 
@@ -924,7 +924,7 @@ kable( head( brewbeer[order(brewbeer$ABV, decreasing=TRUE),c(4,2,5,7,9) ], 1) ) 
 
 Oregon has the highest IBU beer, which is an American Double / Imperial IPA. This shouldn't come as a surprise since IPA style beers have the highest concentration of hops of any beer style. Also a very well preserved beer accompanying the sheer bitterness of this brew. This could also be in direct correlation of the availability of cascade hops which are almost solely produced in the state of Washington and within a close proximity to Oregon.
 
-Table 8: Highest Rated Bitterest Beer
+Table 9: Highest Rated Bitterest Beer
 
 ```r
 # Order by IBU to get the top state
@@ -955,9 +955,9 @@ kable( head( brewbeer[order(brewbeer$IBU, decreasing=TRUE),c(4,2,5,8,9) ], 1) ) 
 </tbody>
 </table>
 
-Table 9 gives a summary overview of ABV values across the entire United Sate, showing a wide range of alcohol content across the nation. We range from 1/10% to 12.8%. The average value of ABV comes in just below 6% at 5.97% while the absolute center value equates to 5.6%. This stands to reason as there area larger percentage of lower alcohol content beers with a few high proof beers which are definitely outliers.
+Table 10 gives a summary overview of ABV values across the entire United Sate, showing a wide range of alcohol content across the nation. We range from 1/10% to 12.8%. The average value of ABV comes in just below 6% at 5.97% while the absolute center value equates to 5.6%. This stands to reason as there are a larger percentage of lower alcohol content beers with a few high proof beers which are definitely outliers.
 
-Table 9: Summary statistics for the ABV
+Table 10: Summary statistics for the ABV
 
 ```r
 kable(data.frame(Summary_Statistics_Value = unclass(summary(brewbeer$ABV))))%>%
@@ -1005,7 +1005,7 @@ kable(data.frame(Summary_Statistics_Value = unclass(summary(brewbeer$ABV))))%>%
 
 For the purpose of this analysis we can conclude less bitter beer typically has a lower alcohol content. This stands to reason considering the highest ABV beers are double and triple, or even quadruple Belgian style ales which contain a larger amount of roasted barley to combat the highly sweet malt content.
 
-Table 10 : Scatter plot of the relationship between bitterness and alcohol yield
+Table 11 : Scatter plot of the relationship between bitterness and alcohol yield
 
 ```r
 plot(brewbeer$IBU, brewbeer$ABV, main="Scatterplot - Bitterness of the beer Vs Alcoholic content",xlab="International Bitterness Units (IBU)", ylab=" Alcohol By Volume (ABV)", pch=19)
@@ -1013,7 +1013,7 @@ plot(brewbeer$IBU, brewbeer$ABV, main="Scatterplot - Bitterness of the beer Vs A
 
 ![](Case_Study1_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
-In conclusion we recognize there are an immensely diverse versions of beers, styles, and alcohol content. We also understand that different areas of the country are accustomed to higher and lower alcohol content and more or less bitter brews. This could be attributed to raw ingredient availability or even cultural differences. If there was a recommendation on available breweries it would be likely you would find one in the Colorado region since they have the largest amount of breweries and most diverse brewing styles across the nation. It would be the most convenient in its locality to large shipping lanes that traverse the country with may large shipping companies already established. However, the large caveat in purchasing a brewery in Colorado puts you into a market saturated by your largest competitor Miller/Coors.
+In conclusion we recognize there are an immensely diverse versions of beers, styles, and alcohol content. We also understand that different areas of the country are accustomed to higher and lower alcohol content and more or less bitter brews. This could be attributed to raw ingredient availability or even cultural differences. If there was a recommendation on available breweries it would be likely you would find one in the Colorado region since they have the largest amount of breweries and most diverse brewing styles across the nation. It would be the most convenient in its locality to large shipping lanes that traverse the country with many large shipping companies already established. However, the large caveat in purchasing a brewery in Colorado puts you into a market saturated by your largest competitor Miller/Coors.
 
 
 
