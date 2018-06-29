@@ -866,7 +866,7 @@ Table 6: Median ABV by State
 # Add Labels to the plot
 ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),], aes( State, ABV ) ) +
     geom_bar(stat="identity") +
-    labs(title="Alcohol by Volume By State",x ="Alcohol by Volume", y = "State") +
+    labs(title="Alcohol by Volume By State",x ="State", y = "Alcohol by Volume") +
     coord_flip() +
     theme(plot.title = element_text(hjust = 0.5))
 ```
@@ -881,7 +881,7 @@ Table 7: Median IBU by State
 # Add Labels
 ggplot( median_abv_ibu[!is.na(median_abv_ibu$IBU),] , aes( State, IBU ) ) +
     geom_bar(stat="identity") +
-    labs(title="International Bittering Unit By State",x ="International Bittering Unit", y = "State") +
+    labs(title="International Bittering Unit By State",x ="State", y = "International Bittering Unit") +
     coord_flip() +
     theme(plot.title = element_text(hjust = 0.5))
 ```
