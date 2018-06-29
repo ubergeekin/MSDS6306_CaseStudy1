@@ -10,3 +10,4 @@ Required libraries
 * ggplot2
 * kableExtra
 * dataMaid
+* mapproj
