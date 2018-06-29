@@ -1008,7 +1008,17 @@ For the purpose of this analysis we can conclude less bitter beer typically has 
 Table 11 : Scatter plot of the relationship between bitterness and alcohol yield
 
 ```r
-plot(brewbeer$IBU, brewbeer$ABV, main="Scatterplot - Bitterness of the beer Vs Alcoholic content",xlab="International Bitterness Units (IBU)", ylab=" Alcohol By Volume (ABV)", pch=19)
+#plot(brewbeer$IBU, brewbeer$ABV, main="Scatterplot - Bitterness of the beer Vs Alcoholic content",xlab="International Bitterness Units (IBU)", ylab=" Alcohol By Volume (ABV)", pch=19)
+beerAB <- data.frame(brewbeer$IBU, brewbeer$ABV)
+sp <- ggplot(brewbeer, aes(x=IBU, y=ABV, color=IBU)) + geom_point()
+sp+scale_color_gradient(low="#F0DC82", high="#7B3F00")+labs(subtitle="IBU Vs ABV", 
+       y="Alcohol By Volume (ABV)", 
+       x="International Bitterness Units (IBU)", 
+       title="Scatterplot - Bitterness of the beer Vs Alcoholic content")
+```
+
+```
+## Warning: Removed 1005 rows containing missing values (geom_point).
 ```
 
 ![](Case_Study1_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
