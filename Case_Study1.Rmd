@@ -149,7 +149,14 @@ For the purpose of this analysis we can conclude less bitter beer typically has 
 
 Table 11 : Scatter plot of the relationship between bitterness and alcohol yield
 ```{r}
-plot(brewbeer$IBU, brewbeer$ABV, main="Scatterplot - Bitterness of the beer Vs Alcoholic content",xlab="International Bitterness Units (IBU)", ylab=" Alcohol By Volume (ABV)", pch=19)
+#plot(brewbeer$IBU, brewbeer$ABV, main="Scatterplot - Bitterness of the beer Vs Alcoholic content",xlab="International Bitterness Units (IBU)", ylab=" Alcohol By Volume (ABV)", pch=19)
+beerAB <- data.frame(brewbeer$IBU, brewbeer$ABV)
+sp <- ggplot(brewbeer, aes(x=IBU, y=ABV, color=IBU)) + geom_point()
+sp+scale_color_gradient(low="#F0DC82", high="#7B3F00")+labs(subtitle="IBU Vs ABV", 
+       y="Alcohol By Volume (ABV)", 
+       x="International Bitterness Units (IBU)", 
+       title="Scatterplot - Bitterness of the beer Vs Alcoholic content")
+
 ``` 
 
 In conclusion we recognize there are an immensely diverse versions of beers, styles, and alcohol content. We also understand that different areas of the country are accustomed to higher and lower alcohol content and more or less bitter brews. This could be attributed to raw ingredient availability or even cultural differences. If there was a recommendation on available breweries it would be likely you would find one in the Colorado region since they have the largest amount of breweries and most diverse brewing styles across the nation. It would be the most convenient in its locality to large shipping lanes that traverse the country with many large shipping companies already established. However, the large caveat in purchasing a brewery in Colorado puts you into a market saturated by your largest competitor Miller/Coors.
